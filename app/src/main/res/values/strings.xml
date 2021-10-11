@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Open311 Rostock</string>
+    <string name="title_activity_main">Start</string>
+    <string name="nav_header_title">Rostock311</string>
+    <string name="nav_header_subtitle">Meldeportal für Anliegen</string>
+    <string name="nav_header_desc">Logo</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Start</string>
+    <string name="menu_issues">Meine Anliegen</string>
+    <string name="menu_search">Suche</string>
+</resources>
