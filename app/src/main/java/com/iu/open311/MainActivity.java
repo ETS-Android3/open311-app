@@ -1,6 +1,7 @@
 package com.iu.open311;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -13,7 +14,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.iu.open311.api.Client;
+import com.iu.open311.database.Database;
 import com.iu.open311.databinding.ActivityMainBinding;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initServiceCategories();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -58,5 +65,16 @@ public class MainActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) ||
                 super.onSupportNavigateUp();
+    }
+
+    private void initServiceCategories() {
+        Client apiClient = Client.getInstance(getApplicationContext());
+        try {
+            apiClient.initServiceCategories(Database.getInstance(getApplicationContext()));
+        } catch (IOException e) {
+            Log.e(this.getClass().getSimpleName(),
+                    "Could not load service categories: " + e.getMessage()
+            );
+        }
     }
 }
