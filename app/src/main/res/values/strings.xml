@@ -21,4 +21,6 @@
     <string name="lastname_title">Nachname</string>
     <string name="email_title">E-Mail</string>
     <string name="phone_title">Telefon</string>
+    <string name="credit_description">Diese App ist im Rahmen eines Studienprojekts der IU Hochschule im Modul \"Mobile Software Engineering\" entstanden.</string>
+    <string name="credit_images_description">Ein Dank für die kostenlos zur Verfügung gestellten Bilder geht an folgende Autoren (Quellen):</string>
 </resources>

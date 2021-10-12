@@ -20,6 +20,9 @@ public abstract class DefaultActivity extends AppCompatActivity {
             case R.id.action_settings:
                 switchActivity(SettingsActivity.class, null);
                 return true;
+            case R.id.action_credits:
+                switchActivity(CreditsActivity.class, null);
+                return true;
             default:
                 Log.e(this.getClass().getSimpleName(), "Unknown menu option");
         }
