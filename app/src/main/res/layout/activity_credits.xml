@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/credit_images_description"
@@ -31,6 +32,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textDescription"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Startseite oben: Luftaufnahme Rostock Warnemünde | Foto: Hansestadt Rostock/Fotoagentur nordlicht"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textImages"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Startseite unten: Wegeleitsystem in Rostock, im Hintergrund ein Teil des Fünfgiebelhauses | Foto: Fotoagentur nordlicht"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textImages"
         app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 

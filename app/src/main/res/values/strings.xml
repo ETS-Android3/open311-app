@@ -1,17 +1,4 @@
 <resources>
-    <string name="app_name">Open311 Rostock</string>
-    <string name="title_activity_main">Open311 Rostock</string>
-    <string name="nav_header_title">Rostock311</string>
-    <string name="nav_header_subtitle">Meldeportal für Anliegen</string>
-    <string name="nav_header_desc">Logo</string>
-    <string name="action_settings">Einstellungen</string>
-
-    <string name="menu_home">Start</string>
-    <string name="menu_issues">Meine Anliegen</string>
-    <string name="menu_search">Suche</string>
-    <string name="action_credits">Credits</string>
-    <string name="title_activity_settings">Einstellungen</string>
-
     <!-- Preference Titles -->
     <string name="user_header">Name</string>
     <string name="contact_header">Kontaktdaten</string>
@@ -23,4 +10,22 @@
     <string name="phone_title">Telefon</string>
     <string name="credit_description">Diese App ist im Rahmen eines Studienprojekts der IU Hochschule im Modul \"Mobile Software Engineering\" entstanden.</string>
     <string name="credit_images_description">Ein Dank für die kostenlos zur Verfügung gestellten Bilder geht an folgende Autoren (Quellen):</string>
+    <string name="title_welcome">Herzlich Willkommen</string>
+    <string name="welcome_info">Hier können Sie einfach und bequem Anliegen an die Stadt Rostock melden. Nutzen Sie die App um der Stadt Ihre Probleme und Ideen mitzuteilen.</string>
+
+
+    <string name="app_name">Open311 Rostock</string>
+    <string name="title_activity_main">Open311 Rostock</string>
+    <string name="nav_header_title">Rostock311</string>
+    <string name="nav_header_subtitle">Meldeportal für Anliegen</string>
+    <string name="nav_header_desc">Logo</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Start</string>
+    <string name="menu_issues">Meine Meldungen</string>
+    <string name="new_issue">Neue Meldung</string>
+    <string name="menu_search">Suche</string>
+    <string name="action_credits">Credits</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="search_info">Nutzen Sie unsere Suchfunktion um sich alle Meldungen und Anliegen, welche an die Stadt Rostock übermittelt wurden anzusehen und zu durchsuchen.</string>
 </resources>

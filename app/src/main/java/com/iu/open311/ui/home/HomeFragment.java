@@ -1,45 +1,94 @@
 package com.iu.open311.ui.home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 
 import com.iu.open311.R;
 import com.iu.open311.databinding.FragmentHomeBinding;
 
+import java.util.StringJoiner;
+
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
-    ) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+    private final SharedPreferences.OnSharedPreferenceChangeListener listener =
+            (sharedPreferences, s) -> updateUsername(sharedPreferences);
 
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        initShownUsername();
+        initButtonIssues();
+        initButtonSearch();
+
         return root;
+    }
+
+    private void initButtonIssues() {
+        binding.btnIssues.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(getActivity(),
+                    R.id.nav_host_fragment_content_main
+            );
+            navController.navigate(R.id.nav_issues);
+        });
+    }
+
+    private void initButtonSearch() {
+        binding.btnSearch.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(getActivity(),
+                    R.id.nav_host_fragment_content_main
+            );
+            navController.navigate(R.id.nav_search);
+        });
+    }
+
+    private void initShownUsername() {
+        if (null != getContext()) {
+            updateUsername(PreferenceManager.getDefaultSharedPreferences(getContext()));
+            PreferenceManager.getDefaultSharedPreferences(getContext())
+                             .registerOnSharedPreferenceChangeListener(listener);
+        }
+    }
+
+    private void updateUsername(SharedPreferences sharedPreferences) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        stringJoiner.add(sharedPreferences.getString("firstname", ""));
+        stringJoiner.add(sharedPreferences.getString("lastname", ""));
+        binding.textUsername.setText(stringJoiner.toString());
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (null != getContext()) {
+            PreferenceManager.getDefaultSharedPreferences(getContext())
+                             .registerOnSharedPreferenceChangeListener(listener);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+
+        if (null != getContext()) {
+            PreferenceManager.getDefaultSharedPreferences(getContext())
+                             .unregisterOnSharedPreferenceChangeListener(listener);
+        }
     }
 }
