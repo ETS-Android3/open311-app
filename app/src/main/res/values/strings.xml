@@ -9,4 +9,16 @@
     <string name="menu_home">Start</string>
     <string name="menu_issues">Meine Anliegen</string>
     <string name="menu_search">Suche</string>
+    <string name="action_credits">Credits</string>
+    <string name="title_activity_settings">Einstellungen</string>
+
+    <!-- Preference Titles -->
+    <string name="user_header">Name</string>
+    <string name="contact_header">Kontaktdaten</string>
+
+    <!-- User Preferences -->
+    <string name="firstname_title">Vorname</string>
+    <string name="lastname_title">Nachname</string>
+    <string name="email_title">E-Mail</string>
+    <string name="phone_title">Telefon</string>
 </resources>

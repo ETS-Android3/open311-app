@@ -20,7 +20,7 @@ import com.iu.open311.databinding.ActivityMainBinding;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DefaultActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
