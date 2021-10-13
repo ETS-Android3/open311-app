@@ -31,10 +31,20 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         initShownUsername();
+        initButtonAdd();
         initButtonIssues();
         initButtonSearch();
 
         return root;
+    }
+
+    private void initButtonAdd() {
+        binding.btnAddIssue.setOnClickListener(view -> {
+            NavController navController = Navigation.findNavController(getActivity(),
+                    R.id.nav_host_fragment_content_main
+            );
+            navController.navigate(R.id.nav_add);
+        });
     }
 
     private void initButtonIssues() {
