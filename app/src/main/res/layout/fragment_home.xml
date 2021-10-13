@@ -85,7 +85,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btn_add_issue"
+                        android:id="@+id/btn_new_issue"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

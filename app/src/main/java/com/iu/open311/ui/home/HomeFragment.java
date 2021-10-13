@@ -12,6 +12,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
+import com.iu.open311.DefaultActivity;
+import com.iu.open311.NewIssueActivity;
 import com.iu.open311.R;
 import com.iu.open311.databinding.FragmentHomeBinding;
 
@@ -39,11 +41,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void initButtonAdd() {
-        binding.btnAddIssue.setOnClickListener(view -> {
-            NavController navController = Navigation.findNavController(getActivity(),
-                    R.id.nav_host_fragment_content_main
-            );
-            navController.navigate(R.id.nav_add);
+        binding.btnNewIssue.setOnClickListener(view -> {
+            DefaultActivity activity = (DefaultActivity) getActivity();
+            activity.switchActivity(NewIssueActivity.class);
         });
     }
 

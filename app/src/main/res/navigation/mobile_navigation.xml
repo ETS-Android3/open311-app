@@ -22,10 +22,4 @@
         android:name="com.iu.open311.ui.search.SearchFragment"
         android:label="@string/menu_search"
         tools:layout="@layout/fragment_search" />
-
-    <fragment
-        android:id="@+id/nav_add"
-        android:name="com.iu.open311.ui.add.AddFragment"
-        android:label="@string/new_issue"
-        tools:layout="@layout/fragment_add" />
 </navigation>

@@ -7,10 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.Map;
 
 public abstract class DefaultActivity extends AppCompatActivity {
 
@@ -18,10 +15,10 @@ public abstract class DefaultActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                switchActivity(SettingsActivity.class, null);
+                switchActivity(SettingsActivity.class);
                 return true;
             case R.id.action_credits:
-                switchActivity(CreditsActivity.class, null);
+                switchActivity(CreditsActivity.class);
                 return true;
             default:
                 Log.e(this.getClass().getSimpleName(), "Unknown menu option");
@@ -30,14 +27,9 @@ public abstract class DefaultActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void switchActivity(Class<? extends Activity> activityClass,
-            @Nullable Map<String, String> extras
+    public void switchActivity(Class<? extends Activity> activityClass
     ) {
         Intent intent = new Intent(this, activityClass);
-
-        if (null != extras) {
-            extras.forEach(intent::putExtra);
-        }
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }
