@@ -67,4 +67,5 @@ dependencies {
 
     // stepper
     implementation 'com.stepstone.stepper:material-stepper:3.2.3'
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
 }

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <com.stepstone.stepper.StepperLayout
+        android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/stepperLayout"
+        app:ms_activeStepColor="@color/primary"
         app:ms_backButtonText="@string/btn_back"
-        app:ms_nextButtonText="@string/btn_next"
         app:ms_completeButtonText="@string/btn_send"
-        app:ms_stepperType="dots">
-    </com.stepstone.stepper.StepperLayout>
+        app:ms_errorColor="@color/secondary"
+        app:ms_inactiveStepColor="@color/ms_material_grey_400"
+        app:ms_nextButtonText="@string/btn_next"
+        app:ms_stepperType="dots" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

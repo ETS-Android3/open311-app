@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface ServiceCategoryDao {
     @Query("SELECT * FROM service_category")
-    List<ServiceCategory> getAll();
+    List<ServiceCategory> findAll();
 
     @Insert
     void insert(ServiceCategory serviceCategory);

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.iu.open311.R;
-import com.iu.open311.databinding.FragmentSearchBinding;
+import com.iu.open311.ui.newissue.step1.Step1Fragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -30,17 +30,17 @@ public class NewIssueFragment extends Fragment implements Step {
         public Step createStep(int position) {
             switch (position) {
                 case 0:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_1, R.string.new_issue_step1);
+                    return new Step1Fragment();
                 case 1:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_2, R.string.new_issue_step2);
+                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_2);
                 case 2:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_3, R.string.new_issue_step3);
+                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_3);
                 case 3:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_4, R.string.new_issue_step4);
+                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_4);
                 case 4:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_5, R.string.new_issue_step5);
+                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_5);
                 case 5:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_6, R.string.new_issue_step6);
+                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_6);
                 default:
                     throw new IllegalArgumentException("Unsupported position: " + position);
             }
@@ -48,7 +48,7 @@ public class NewIssueFragment extends Fragment implements Step {
 
         @Override
         public int getCount() {
-            return 6;
+            return 7;
         }
 
         @NonNull
@@ -59,15 +59,11 @@ public class NewIssueFragment extends Fragment implements Step {
         }
     }
 
-    private FragmentSearchBinding binding;
-
     private static String LAYOUT_RESOURCE_ID_ARG_KEY = "messageResourceId";
-    private static String TITLE_STRING_ID_ARG_KEY = "titleStringId";
 
-    public static NewIssueFragment newInstance(int layoutResId, int titleStringId) {
+    public static NewIssueFragment newInstance(int layoutResId) {
         Bundle args = new Bundle();
         args.putInt(LAYOUT_RESOURCE_ID_ARG_KEY, layoutResId);
-        args.putInt(TITLE_STRING_ID_ARG_KEY, titleStringId);
         NewIssueFragment fragment = new NewIssueFragment();
         fragment.setArguments(args);
         return fragment;
@@ -77,16 +73,15 @@ public class NewIssueFragment extends Fragment implements Step {
             Bundle savedInstanceState
     ) {
         int resourceId = (int) getArguments().get(LAYOUT_RESOURCE_ID_ARG_KEY);
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-        int titleStringId = (int) getArguments().get(TITLE_STRING_ID_ARG_KEY);
-        getActivity().setTitle(titleStringId);
-        return inflater.inflate(resourceId, container, false);
+        View inflate = inflater.inflate(resourceId, container, false);
+
+        return inflate;
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 
     @Override
