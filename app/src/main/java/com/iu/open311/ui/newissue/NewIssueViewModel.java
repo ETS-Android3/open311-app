@@ -21,6 +21,13 @@ public class NewIssueViewModel extends ViewModel {
 
     private String selectedServiceCategory;
 
+    private String address;
+
+    private double longitude;
+
+    private double latitude;
+
+
     private final ServiceCategoryRepository categoryRepository;
 
     public NewIssueViewModel(ServiceCategoryRepository categoryRepository) {
@@ -46,6 +53,30 @@ public class NewIssueViewModel extends ViewModel {
 
     public void setSelectedServiceCategory(String selectedServiceCategory) {
         this.selectedServiceCategory = selectedServiceCategory;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public void loadServiceCategories() {
