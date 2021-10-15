@@ -1,87 +1,73 @@
 package com.iu.open311.ui.newissue.step1;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.iu.open311.R;
 
 import java.util.List;
 
-public class Step1EntryAdapter extends RecyclerView.Adapter<Step1EntryAdapter.ViewHolder> {
+public class Step1EntryAdapter extends ArrayAdapter<String> {
 
-    private final List<String> serviceGroupNames;
-    private Context context;
+    private List<String> serviceGroupNames;
+    private Step1ViewModel viewModel;
+    private Resources resources;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView serviceGroupImage;
-        private final TextView serviceGroupName;
-
-        public ViewHolder(View view) {
-            super(view);
-            serviceGroupImage = view.findViewById(R.id.serviceGroupImage);
-            serviceGroupName = view.findViewById(R.id.serviceGroupName);
-        }
-
-        public ImageView getServiceGroupImage() {
-            return serviceGroupImage;
-        }
-
-        public TextView getServiceGroupName() {
-            return serviceGroupName;
-        }
-
-    }
-
-    public Step1EntryAdapter(List<String> serviceGroupNames, Context context) {
+    public Step1EntryAdapter(Context context, List<String> serviceGroupNames,
+            Step1ViewModel viewModel, Resources resources
+    ) {
+        super(context, -1, serviceGroupNames);
         this.serviceGroupNames = serviceGroupNames;
-        this.context = context;
-    }
-
-    public void setServiceGroupNames(List<String> serviceGroupNames) {
-        this.serviceGroupNames.clear();
-        this.serviceGroupNames.addAll(serviceGroupNames);
-        notifyDataSetChanged();
+        this.viewModel = viewModel;
+        this.resources = resources;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext())
-                                  .inflate(R.layout.service_group_list_item, viewGroup, false);
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent
+    ) {
+        LayoutInflater inflater =
+                (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.service_group_list_item, parent, false);
+        CardView cardView = view.findViewById(R.id.cardView);
+        TextView textView = (TextView) cardView.findViewById(R.id.serviceGroupName);
+        ImageView imageView = (ImageView) cardView.findViewById(R.id.serviceGroupImage);
+        textView.setText(serviceGroupNames.get(position));
 
-        return new ViewHolder(view);
-    }
+        if (null != viewModel.getSelectedServiceCategoryGroup() &&
+                viewModel.getSelectedServiceCategoryGroup().equals(getByPosition(position))) {
+            cardView.setCardBackgroundColor(resources.getColor(R.color.accent));
+        }
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        viewHolder.getServiceGroupName().setText(serviceGroupNames.get(position));
 
         String strippedName = serviceGroupNames.get(position)
                                                .toLowerCase()
                                                .replaceAll("[äöüß/]", "")
                                                .replace(" ", "");
-        int imageId = context.getResources()
-                             .getIdentifier(strippedName, "drawable", context.getPackageName());
+        int imageId = getContext().getResources()
+                                  .getIdentifier(strippedName, "drawable",
+                                          getContext().getPackageName()
+                                  );
         if (0 < imageId) {
-            viewHolder.getServiceGroupImage().setImageResource(imageId);
+            imageView.setImageResource(imageId);
         } else {
-            viewHolder.getServiceGroupImage().setImageResource(R.drawable.info_square_fill);
+            imageView.setImageResource(R.drawable.info_square_fill);
         }
+
+        return cardView;
     }
 
     public String getByPosition(int position) {
         return serviceGroupNames.get(position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return null == this.serviceGroupNames ? 0 : this.serviceGroupNames.size();
     }
 }
