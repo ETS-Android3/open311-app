@@ -44,4 +44,5 @@
     <string name="error_step2">Bitte wählen Sie zu erst einen Service-Kategorie aus</string>
     <string name="error_step3">Bitte geben Sie zu erst eine Anschrift an</string>
     <string name="label_address">Anschrift (Straße, Wohnort)</string>
+    <string name="label_marker">Adresse festlegen</string>
 </resources>
