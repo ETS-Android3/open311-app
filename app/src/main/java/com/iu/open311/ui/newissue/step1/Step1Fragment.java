@@ -1,6 +1,5 @@
 package com.iu.open311.ui.newissue.step1;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.iu.open311.R;
 import com.iu.open311.database.Database;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import java.util.List;
@@ -70,7 +69,6 @@ public class Step1Fragment extends Fragment implements Step {
         listView.setOnItemClickListener((parent, view, position, id) -> {
             viewModel.setSelectedServiceCategoryGroup(entryAdapter.getByPosition(position));
             entryAdapter.notifyDataSetChanged();
-
         });
     }
 
@@ -93,7 +91,8 @@ public class Step1Fragment extends Fragment implements Step {
                                                        .distinct()
                                                        .sorted()
                                                        .collect(Collectors.toList());
-                entryAdapter = new Step1EntryAdapter(getContext(), groups, viewModel, getResources());
+                entryAdapter =
+                        new Step1EntryAdapter(getContext(), groups, viewModel, getResources());
                 listView.setAdapter(entryAdapter);
             }
         });
