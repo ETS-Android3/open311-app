@@ -5,9 +5,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.iu.open311.database.Database;
 import com.iu.open311.databinding.ActivityNewIssueBinding;
 import com.iu.open311.ui.newissue.NewIssueFragment;
+import com.iu.open311.ui.newissue.NewIssueViewModel;
+import com.iu.open311.ui.newissue.NewIssueViewModelFactory;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
@@ -15,6 +19,7 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
 
     private ActivityNewIssueBinding binding;
     private StepperLayout stepperLayout;
+    private NewIssueViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,10 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
 
         binding = ActivityNewIssueBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        viewModel = new ViewModelProvider(this,
+                new NewIssueViewModelFactory(Database.getInstance(getApplicationContext()))
+        ).get(NewIssueViewModel.class);
 
         setTitle(R.string.new_issue);
         stepperLayout = findViewById(R.id.stepperLayout);
@@ -60,5 +69,9 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
     @Override
     public void onReturn() {
         finish();
+    }
+
+    public NewIssueViewModel getViewModel() {
+        return viewModel;
     }
 }

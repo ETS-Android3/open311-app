@@ -14,17 +14,18 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.iu.open311.R;
+import com.iu.open311.ui.newissue.NewIssueViewModel;
 
 import java.util.List;
 
 public class Step1EntryAdapter extends ArrayAdapter<String> {
 
     private List<String> serviceGroupNames;
-    private Step1ViewModel viewModel;
+    private NewIssueViewModel viewModel;
     private Resources resources;
 
     public Step1EntryAdapter(Context context, List<String> serviceGroupNames,
-            Step1ViewModel viewModel, Resources resources
+            NewIssueViewModel viewModel, Resources resources
     ) {
         super(context, -1, serviceGroupNames);
         this.serviceGroupNames = serviceGroupNames;

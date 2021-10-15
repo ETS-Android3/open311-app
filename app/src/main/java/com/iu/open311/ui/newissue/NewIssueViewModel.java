@@ -1,4 +1,4 @@
-package com.iu.open311.ui.newissue.step1;
+package com.iu.open311.ui.newissue;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import com.iu.open311.database.repository.ServiceCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Step1ViewModel extends ViewModel {
+public class NewIssueViewModel extends ViewModel {
     private final MutableLiveData<List<ServiceCategory>> serviceCategories =
             new MutableLiveData<>();
 
@@ -20,7 +20,7 @@ public class Step1ViewModel extends ViewModel {
 
     private final ServiceCategoryRepository categoryRepository;
 
-    public Step1ViewModel(ServiceCategoryRepository categoryRepository) {
+    public NewIssueViewModel(ServiceCategoryRepository categoryRepository) {
 
         this.categoryRepository = categoryRepository;
     }
