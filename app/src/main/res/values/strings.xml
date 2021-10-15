@@ -38,6 +38,8 @@
     <string name="new_issue_step5">Foto</string>
     <string name="new_issue_step6">Kontaktdaten</string>
     <string name="new_issue_step7">Zusammenfassung</string>
+    <string name="error_load_groups">Service Gruppen können nicht geladen werden</string>
     <string name="error_load_categories">Service Kategorien können nicht geladen werden</string>
-    <string name="error_step1">Bitte wählen Sie zu erst einen Servicegruppe aus</string>
+    <string name="error_step1">Bitte wählen Sie zu erst einen Service-Gruppe aus</string>
+    <string name="error_step2">Bitte wählen Sie zu erst einen Service-Kategorie aus</string>
 </resources>

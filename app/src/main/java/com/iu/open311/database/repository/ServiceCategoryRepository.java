@@ -28,8 +28,8 @@ public class ServiceCategoryRepository {
 
     public Result<List<ServiceCategory>> findAll() {
         try {
-            List<ServiceCategory> courses = database.serviceCategoryDao().findAll();
-            return new Result.Success<List<ServiceCategory>>(courses);
+            List<ServiceCategory> categories = database.serviceCategoryDao().findAll();
+            return new Result.Success<List<ServiceCategory>>(categories);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error while fetching service categories", e));
         }

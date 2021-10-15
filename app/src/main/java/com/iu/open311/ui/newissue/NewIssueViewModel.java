@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewIssueViewModel extends ViewModel {
+    private boolean startedLoadingServiceCategories = false;
     private final MutableLiveData<List<ServiceCategory>> serviceCategories =
             new MutableLiveData<>();
 
     private String selectedServiceCategoryGroup;
+
+    private String selectedServiceCategory;
 
     private final ServiceCategoryRepository categoryRepository;
 
@@ -37,21 +40,26 @@ public class NewIssueViewModel extends ViewModel {
         this.selectedServiceCategoryGroup = selectedServiceCategoryGroup;
     }
 
-    public ServiceCategoryRepository getCategoryRepository() {
-        return categoryRepository;
+    public String getSelectedServiceCategory() {
+        return selectedServiceCategory;
+    }
+
+    public void setSelectedServiceCategory(String selectedServiceCategory) {
+        this.selectedServiceCategory = selectedServiceCategory;
     }
 
     public void loadServiceCategories() {
-        new Thread(() -> {
-            Result<List<ServiceCategory>> result = categoryRepository.findAll();
-            if (result instanceof Result.Success) {
-                this.serviceCategories.postValue(
-                        (List<ServiceCategory>) ((Result.Success<?>) result).getData());
-            } else {
-                Log.e(this.getClass().getSimpleName(), "Could not load service categories");
-                this.serviceCategories.postValue(new ArrayList<>());
-            }
-        }).start();
+        if (!startedLoadingServiceCategories) {
+            startedLoadingServiceCategories = true;
+            new Thread(() -> {
+                Result<List<ServiceCategory>> result = categoryRepository.findAll();
+                if (result instanceof Result.Success) {
+                    this.serviceCategories.postValue((List<ServiceCategory>) ((Result.Success<?>) result).getData());
+                } else {
+                    Log.e(this.getClass().getSimpleName(), "Could not load service categories");
+                    this.serviceCategories.postValue(new ArrayList<>());
+                }
+            }).start();
+        }
     }
-
 }

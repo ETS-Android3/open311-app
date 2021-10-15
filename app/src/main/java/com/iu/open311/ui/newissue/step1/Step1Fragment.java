@@ -9,8 +9,6 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.iu.open311.NewIssueActivity;
 import com.iu.open311.R;
 import com.iu.open311.ui.newissue.AbstractStepFragment;
 import com.stepstone.stepper.VerificationError;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Step1Fragment extends AbstractStepFragment {
-    private GridView listView;
+    private GridView gridView;
     private Step1EntryAdapter entryAdapter;
 
     @Nullable
@@ -27,20 +25,15 @@ public class Step1Fragment extends AbstractStepFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        getActivity().setTitle(R.string.new_issue_step1);
         View view = inflater.inflate(R.layout.fragment_new_issue_1, container, false);
-        listView = view.findViewById(R.id.listView);
-
-        loadServiceCategoryGroups();
-        handleCategoryClick();
+        gridView = view.findViewById(R.id.gridView);
 
         return view;
     }
 
     @Override
     public VerificationError verifyStep() {
-        if (null == ((NewIssueActivity) getActivity()).getViewModel()
-                                                      .getSelectedServiceCategoryGroup()) {
+        if (null == getViewModel().getSelectedServiceCategoryGroup()) {
             return new VerificationError(getResources().getString(R.string.error_step1));
         }
 
@@ -49,7 +42,9 @@ public class Step1Fragment extends AbstractStepFragment {
 
     @Override
     public void onSelected() {
-
+        getActivity().setTitle(R.string.new_issue_step1);
+        loadServiceCategoryGroups();
+        handleGroupClick();
     }
 
     @Override
@@ -57,8 +52,8 @@ public class Step1Fragment extends AbstractStepFragment {
 
     }
 
-    private void handleCategoryClick() {
-        listView.setOnItemClickListener((parent, view, position, id) -> {
+    private void handleGroupClick() {
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
             getViewModel().setSelectedServiceCategoryGroup(entryAdapter.getByPosition(position));
             entryAdapter.notifyDataSetChanged();
         });
@@ -69,28 +64,19 @@ public class Step1Fragment extends AbstractStepFragment {
 
         getViewModel().getServiceCategories()
                       .observe(getViewLifecycleOwner(), serviceCategories -> {
-                          if (null == serviceCategories) {
+                          if (null == serviceCategories || serviceCategories.isEmpty()) {
                               return;
                           }
 
-                          if (serviceCategories.isEmpty()) {
-                              Snackbar.make(listView,
-                                      getResources().getString(R.string.error_load_categories),
-                                      Snackbar.LENGTH_LONG
-                              ).show();
-                          } else {
-
-                              List<String> groups = serviceCategories.stream()
-                                                                     .map(serviceCategory -> serviceCategory.group)
-                                                                     .distinct()
-                                                                     .sorted()
-                                                                     .collect(Collectors.toList());
-                              entryAdapter =
-                                      new Step1EntryAdapter(getContext(), groups, getViewModel(),
-                                              getResources()
-                                      );
-                              listView.setAdapter(entryAdapter);
-                          }
+                          List<String> groups = serviceCategories.stream()
+                                                                 .map(serviceCategory -> serviceCategory.group)
+                                                                 .distinct()
+                                                                 .sorted()
+                                                                 .collect(Collectors.toList());
+                          entryAdapter = new Step1EntryAdapter(getContext(), groups, getViewModel(),
+                                  getResources()
+                          );
+                          gridView.setAdapter(entryAdapter);
                       });
     }
 }

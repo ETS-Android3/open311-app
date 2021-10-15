@@ -20,9 +20,9 @@ import java.util.List;
 
 public class Step1EntryAdapter extends ArrayAdapter<String> {
 
-    private List<String> serviceGroupNames;
-    private NewIssueViewModel viewModel;
-    private Resources resources;
+    private final List<String> serviceGroupNames;
+    private final NewIssueViewModel viewModel;
+    private final Resources resources;
 
     public Step1EntryAdapter(Context context, List<String> serviceGroupNames,
             NewIssueViewModel viewModel, Resources resources

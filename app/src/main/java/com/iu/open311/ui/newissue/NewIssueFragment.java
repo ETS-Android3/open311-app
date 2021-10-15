@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.iu.open311.R;
 import com.iu.open311.ui.newissue.step1.Step1Fragment;
+import com.iu.open311.ui.newissue.step2.Step2Fragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -32,7 +33,7 @@ public class NewIssueFragment extends Fragment implements Step {
                 case 0:
                     return new Step1Fragment();
                 case 1:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_2);
+                    return new Step2Fragment();
                 case 2:
                     return NewIssueFragment.newInstance(R.layout.fragment_new_issue_3);
                 case 3:
