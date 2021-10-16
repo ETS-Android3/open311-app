@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,8 +56,18 @@ public class Step7Fragment extends AbstractStepFragment {
                 viewModel.getSelectedServiceCategory().second);
         ((TextView) view.findViewById(R.id.summaryAddress)).setText(getAddress());
         ((TextView) view.findViewById(R.id.summaryDescription)).setText(viewModel.getDescription());
-        ((TextView) view.findViewById(R.id.summaryPhoto)).setText(getPhoto());
         ((TextView) view.findViewById(R.id.summaryContact)).setText(getContact());
+
+        if (null == viewModel.getPhoto()) {
+            view.findViewById(R.id.summaryPhoto).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.imagePreview).setVisibility(View.GONE);
+            ((TextView) view.findViewById(R.id.summaryPhoto)).setText(getPhoto());
+
+        } else {
+            view.findViewById(R.id.imagePreview).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.summaryPhoto).setVisibility(View.GONE);
+            ((ImageView) view.findViewById(R.id.imagePreview)).setImageBitmap(viewModel.getPhoto());
+        }
     }
 
     private String getAddress() {
