@@ -17,6 +17,7 @@ import com.iu.open311.ui.newissue.step2.Step2Fragment;
 import com.iu.open311.ui.newissue.step3.Step3Fragment;
 import com.iu.open311.ui.newissue.step4.Step4Fragment;
 import com.iu.open311.ui.newissue.step5.Step5Fragment;
+import com.iu.open311.ui.newissue.step6.Step6Fragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -44,7 +45,7 @@ public class NewIssueFragment extends Fragment implements Step {
                 case 4:
                     return new Step5Fragment();
                 case 5:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_6);
+                    return new Step6Fragment();
                 case 6:
                     return NewIssueFragment.newInstance(R.layout.fragment_new_issue_6);
                 default:
