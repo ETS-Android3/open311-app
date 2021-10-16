@@ -1,5 +1,6 @@
 package com.iu.open311.ui.newissue;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.util.Pair;
 
@@ -21,13 +22,15 @@ public class NewIssueViewModel extends ViewModel {
 
     private Pair<Integer, String> selectedServiceCategoryGroup;
 
-    private Pair<Integer, String>  selectedServiceCategory;
+    private Pair<Integer, String> selectedServiceCategory;
 
     private String address;
 
     private LatLng position;
 
     private String description;
+
+    private Bitmap photo;
 
     private String firstname;
 
@@ -53,15 +56,16 @@ public class NewIssueViewModel extends ViewModel {
         return selectedServiceCategoryGroup;
     }
 
-    public void setSelectedServiceCategoryGroup(Pair<Integer, String> selectedServiceCategoryGroup) {
+    public void setSelectedServiceCategoryGroup(Pair<Integer, String> selectedServiceCategoryGroup
+    ) {
         this.selectedServiceCategoryGroup = selectedServiceCategoryGroup;
     }
 
-    public Pair<Integer, String>  getSelectedServiceCategory() {
+    public Pair<Integer, String> getSelectedServiceCategory() {
         return selectedServiceCategory;
     }
 
-    public void setSelectedServiceCategory(Pair<Integer, String>  selectedServiceCategory) {
+    public void setSelectedServiceCategory(Pair<Integer, String> selectedServiceCategory) {
         this.selectedServiceCategory = selectedServiceCategory;
     }
 
@@ -87,6 +91,14 @@ public class NewIssueViewModel extends ViewModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
     }
 
     public String getFirstname() {

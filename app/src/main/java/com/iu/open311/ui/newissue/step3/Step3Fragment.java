@@ -108,7 +108,10 @@ public class Step3Fragment extends AbstractStepFragment
         String bestProvider = locationManager.getBestProvider(new Criteria(), false);
         Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
         LatLng startPosition = new LatLng(54.083336, 12.108811); // Rostock
-        if (null != lastKnownLocation) {
+        if (null != getViewModel().getPosition()) {
+            startPosition = getViewModel().getPosition();
+            addressField.setText(getViewModel().getAddress());
+        } else if (null != lastKnownLocation) {
             startPosition =
                     new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             updateAddressFromLatLng(startPosition);

@@ -1,16 +1,22 @@
 package com.iu.open311.ui.newissue.step5;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.iu.open311.R;
 import com.iu.open311.ui.newissue.AbstractStepFragment;
 import com.stepstone.stepper.VerificationError;
@@ -18,6 +24,26 @@ import com.stepstone.stepper.VerificationError;
 public class Step5Fragment extends AbstractStepFragment {
 
     private View view;
+    private ImageView imagePreview;
+
+    ActivityResultLauncher<Intent> activityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == Activity.RESULT_OK) {
+                                Intent data = result.getData();
+
+                                Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+                                getViewModel().setPhoto(imageBitmap);
+
+                                imagePreview.setImageBitmap(imageBitmap);
+                                imagePreview.setVisibility(View.VISIBLE);
+                                (view.findViewById(R.id.cameraHint)).setVisibility(View.GONE);
+                            }
+                        }
+                    }
+            );
 
     @Nullable
     @Override
@@ -25,6 +51,15 @@ public class Step5Fragment extends AbstractStepFragment {
             @Nullable Bundle savedInstanceState
     ) {
         view = inflater.inflate(R.layout.fragment_new_issue_5, container, false);
+        imagePreview = view.findViewById(R.id.imagePreview);
+
+        initImage();
+
+        view.findViewById(R.id.btnCamera).setOnClickListener(view -> {
+            launchCamera(view);
+        });
+
+
         return view;
     }
 
@@ -42,4 +77,19 @@ public class Step5Fragment extends AbstractStepFragment {
     public void onError(@NonNull VerificationError error) {
 
     }
+
+    private void initImage() {
+        if (null != getViewModel().getPhoto()) {
+            imagePreview.setImageBitmap(getViewModel().getPhoto());
+            imagePreview.setVisibility(View.VISIBLE);
+            (view.findViewById(R.id.cameraHint)).setVisibility(View.GONE);
+        }
+    }
+
+    private void launchCamera(View view) {
+        // https://developer.android.com/training/camera/photobasics
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        activityResultLauncher.launch(takePictureIntent);
+    }
+
 }

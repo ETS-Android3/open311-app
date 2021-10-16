@@ -65,4 +65,6 @@
     <string name="summary_service_contact">Kontaktdaten:</string>
     <string name="address_by_position">Adresse in Karte markiert</string>
     <string name="no_photo">Kein Foto hochgeladen</string>
+    <string name="photo_hint">Wenn Sie mögen können Sie über das Kamera-Symbol optional ein Foto zu Ihrer Anfrage hinzufügen.</string>
+    <string name="error_camera">Die Kamera kann im Moment nicht verwendet werden.</string>
 </resources>
