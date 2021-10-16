@@ -14,6 +14,26 @@
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:paddingVertical="@dimen/activity_vertical_margin">
 
+        <TextView
+            android:id="@+id/mapViewPermissionsHint"
+            style="@style/TextAppearance.Compat.Notification.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_weight="0"
+            android:text="@string/map_permissions_hint"
+            android:textColor="@color/secondary"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/mapViewHint"
+            style="@style/TextAppearance.Compat.Notification.Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_weight="0"
+            android:text="@string/map_hint" />
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
@@ -24,6 +44,7 @@
             android:id="@+id/inputAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
             android:layout_weight="0"
             android:autofillHints="@string/label_address"
             android:hint="@string/label_address"

@@ -73,6 +73,7 @@ public class Step2Fragment extends AbstractStepFragment {
                                                                                .equals(getViewModel()
                                                                                        .getSelectedServiceCategoryGroup()))
                                                                        .map(serviceCategory -> serviceCategory.serviceName)
+                                                                       .distinct()
                                                                        .sorted()
                                                                        .collect(
                                                                                Collectors.toList());

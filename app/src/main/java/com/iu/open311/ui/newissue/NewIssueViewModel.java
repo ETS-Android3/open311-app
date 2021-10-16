@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.iu.open311.database.Result;
 import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.database.repository.ServiceCategoryRepository;
@@ -23,9 +24,7 @@ public class NewIssueViewModel extends ViewModel {
 
     private String address;
 
-    private double longitude;
-
-    private double latitude;
+    private LatLng position;
 
 
     private final ServiceCategoryRepository categoryRepository;
@@ -63,20 +62,12 @@ public class NewIssueViewModel extends ViewModel {
         this.address = address;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public LatLng getPosition() {
+        return position;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setPosition(LatLng position) {
+        this.position = position;
     }
 
     public void loadServiceCategories() {
@@ -85,7 +76,8 @@ public class NewIssueViewModel extends ViewModel {
             new Thread(() -> {
                 Result<List<ServiceCategory>> result = categoryRepository.findAll();
                 if (result instanceof Result.Success) {
-                    this.serviceCategories.postValue((List<ServiceCategory>) ((Result.Success<?>) result).getData());
+                    this.serviceCategories.postValue(
+                            (List<ServiceCategory>) ((Result.Success<?>) result).getData());
                 } else {
                     Log.e(this.getClass().getSimpleName(), "Could not load service categories");
                     this.serviceCategories.postValue(new ArrayList<>());
