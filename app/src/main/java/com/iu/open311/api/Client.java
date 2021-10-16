@@ -71,8 +71,8 @@ public class Client {
                                  Log.e(Client.class.getSimpleName(), error.getErrorDetail());
                                  Toast.makeText(context, R.string.error_add_new_issue,
                                          Toast.LENGTH_SHORT
-                                 );
-                                 Toast.makeText(context, error.getErrorDetail(), Toast.LENGTH_LONG);
+                                 ).show();
+                                 Toast.makeText(context, error.getErrorDetail(), Toast.LENGTH_LONG).show();
                              }
                          });
     }

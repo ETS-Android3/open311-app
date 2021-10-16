@@ -67,4 +67,5 @@
     <string name="no_photo">Kein Foto hochgeladen</string>
     <string name="photo_hint">Wenn Sie mögen können Sie über das Kamera-Symbol optional ein Foto zu Ihrer Anfrage hinzufügen.</string>
     <string name="error_camera">Die Kamera kann im Moment nicht verwendet werden.</string>
+    <string name="error_network">Sie haben keine Verbindung zum Internet. Die App kann deshalb nicht im vollen Umfang genutzt werden.</string>
 </resources>
