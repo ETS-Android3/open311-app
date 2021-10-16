@@ -1,6 +1,7 @@
 package com.iu.open311.ui.newissue;
 
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -18,9 +19,9 @@ public class NewIssueViewModel extends ViewModel {
     private final MutableLiveData<List<ServiceCategory>> serviceCategories =
             new MutableLiveData<>();
 
-    private String selectedServiceCategoryGroup;
+    private Pair<Integer, String> selectedServiceCategoryGroup;
 
-    private String selectedServiceCategory;
+    private Pair<Integer, String>  selectedServiceCategory;
 
     private String address;
 
@@ -48,19 +49,19 @@ public class NewIssueViewModel extends ViewModel {
         return serviceCategories;
     }
 
-    public String getSelectedServiceCategoryGroup() {
+    public Pair<Integer, String> getSelectedServiceCategoryGroup() {
         return selectedServiceCategoryGroup;
     }
 
-    public void setSelectedServiceCategoryGroup(String selectedServiceCategoryGroup) {
+    public void setSelectedServiceCategoryGroup(Pair<Integer, String> selectedServiceCategoryGroup) {
         this.selectedServiceCategoryGroup = selectedServiceCategoryGroup;
     }
 
-    public String getSelectedServiceCategory() {
+    public Pair<Integer, String>  getSelectedServiceCategory() {
         return selectedServiceCategory;
     }
 
-    public void setSelectedServiceCategory(String selectedServiceCategory) {
+    public void setSelectedServiceCategory(Pair<Integer, String>  selectedServiceCategory) {
         this.selectedServiceCategory = selectedServiceCategory;
     }
 

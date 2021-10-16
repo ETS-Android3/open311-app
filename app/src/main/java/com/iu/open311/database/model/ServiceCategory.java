@@ -29,6 +29,11 @@ public class ServiceCategory {
     public String group;
 
     @NonNull
+    @ColumnInfo(name = "group_id")
+    @JsonProperty("group_id")
+    public Integer groupId;
+
+    @NonNull
     @ColumnInfo(name = "keywords")
     @JsonProperty("keywords")
     public String keywords;

@@ -1,6 +1,7 @@
 package com.iu.open311.ui.newissue.step1;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.iu.open311.R;
+import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.ui.newissue.AbstractStepFragment;
 import com.stepstone.stepper.VerificationError;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Step1Fragment extends AbstractStepFragment {
     private GridView gridView;
@@ -68,11 +71,18 @@ public class Step1Fragment extends AbstractStepFragment {
                               return;
                           }
 
-                          List<String> groups = serviceCategories.stream()
-                                                                 .map(serviceCategory -> serviceCategory.group)
-                                                                 .distinct()
-                                                                 .sorted()
-                                                                 .collect(Collectors.toList());
+                          List<Pair<Integer, String>> groups = new ArrayList<>();
+                          for (ServiceCategory serviceCategory : serviceCategories) {
+                              if (groups.stream()
+                                        .noneMatch(pair -> pair.first.equals(
+                                                serviceCategory.groupId))) {
+                                  groups.add(Pair.create(serviceCategory.groupId,
+                                          serviceCategory.group
+                                  ));
+                              }
+                          }
+                          groups.sort(Comparator.comparing(pair -> pair.second));
+
                           entryAdapter = new Step1EntryAdapter(getContext(), groups, getViewModel(),
                                   getResources()
                           );

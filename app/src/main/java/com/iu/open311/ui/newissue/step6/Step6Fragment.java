@@ -46,7 +46,7 @@ public class Step6Fragment extends AbstractStepFragment {
     public VerificationError verifyStep() {
         closeKeyboard(view);
 
-        if (null == getViewModel().getEmail()) {
+        if (null == getViewModel().getEmail() || getViewModel().getEmail().isEmpty()) {
             return new VerificationError(getResources().getString(R.string.error_step6));
         }
         return null;

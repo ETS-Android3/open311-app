@@ -37,7 +37,7 @@ public class Step4Fragment extends AbstractStepFragment {
     public VerificationError verifyStep() {
         closeKeyboard(view);
 
-        if (null == getViewModel().getDescription()) {
+        if (null == getViewModel().getDescription() || getViewModel().getDescription().isEmpty()) {
             return new VerificationError(getResources().getString(R.string.error_step4));
         }
 

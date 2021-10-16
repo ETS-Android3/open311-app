@@ -1,6 +1,7 @@
 package com.iu.open311.ui.newissue.step2;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.iu.open311.R;
+import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.ui.newissue.AbstractStepFragment;
 import com.stepstone.stepper.VerificationError;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Step2Fragment extends AbstractStepFragment {
     private ListView listView;
@@ -68,17 +71,26 @@ public class Step2Fragment extends AbstractStepFragment {
                               return;
                           }
 
-                          List<String> serviceNames = serviceCategories.stream()
-                                                                       .filter(serviceCategory -> serviceCategory.group
-                                                                               .equals(getViewModel()
-                                                                                       .getSelectedServiceCategoryGroup()))
-                                                                       .map(serviceCategory -> serviceCategory.serviceName)
-                                                                       .distinct()
-                                                                       .sorted()
-                                                                       .collect(
-                                                                               Collectors.toList());
+                          List<Pair<Integer, String>> services = new ArrayList<>();
+                          Integer selectedGroup =
+                                  getViewModel().getSelectedServiceCategoryGroup().first;
+
+                          for (ServiceCategory serviceCategory : serviceCategories) {
+                              if (!serviceCategory.groupId.equals(selectedGroup)) {
+                                  continue;
+                              }
+                              if (services.stream()
+                                          .noneMatch(pair -> pair.first.equals(
+                                                  serviceCategory.serviceCode))) {
+                                  services.add(Pair.create(serviceCategory.serviceCode,
+                                          serviceCategory.serviceName
+                                  ));
+                              }
+                          }
+                          services.sort(Comparator.comparing(pair -> pair.second));
+                          
                           entryAdapter =
-                                  new Step2EntryAdapter(getContext(), serviceNames, getViewModel(),
+                                  new Step2EntryAdapter(getContext(), services, getViewModel(),
                                           getResources()
                                   );
                           listView.setAdapter(entryAdapter);
