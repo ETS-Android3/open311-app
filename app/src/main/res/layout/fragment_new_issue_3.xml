@@ -40,15 +40,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_address"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:layout_weight="0">
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"
-            android:layout_weight="0"
-            android:autofillHints="@string/label_address"
-            android:hint="@string/label_address"
             android:inputType="textPostalAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 

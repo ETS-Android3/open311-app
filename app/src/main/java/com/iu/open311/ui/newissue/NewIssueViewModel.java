@@ -26,6 +26,8 @@ public class NewIssueViewModel extends ViewModel {
 
     private LatLng position;
 
+    private String description;
+
 
     private final ServiceCategoryRepository categoryRepository;
 
@@ -68,6 +70,14 @@ public class NewIssueViewModel extends ViewModel {
 
     public void setPosition(LatLng position) {
         this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void loadServiceCategories() {

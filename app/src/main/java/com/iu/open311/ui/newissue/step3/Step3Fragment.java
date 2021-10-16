@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.textfield.TextInputEditText;
 import com.iu.open311.NewIssueActivity;
 import com.iu.open311.R;
 import com.iu.open311.ui.newissue.AbstractStepFragment;
@@ -43,7 +44,7 @@ public class Step3Fragment extends AbstractStepFragment
 
     private View view;
     private MapView mapView;
-    private EditText addressField;
+    private TextInputEditText addressField;
 
     @Nullable
     @Override
@@ -68,11 +69,9 @@ public class Step3Fragment extends AbstractStepFragment
 
     @Override
     public VerificationError verifyStep() {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        closeKeyboard(view);
 
-        if (null == getViewModel().getAddress()) {
+        if (null == getViewModel().getAddress() || null == getViewModel().getPosition()) {
             return new VerificationError(getResources().getString(R.string.error_step3));
         }
 

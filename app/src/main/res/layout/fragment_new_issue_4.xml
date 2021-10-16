@@ -3,17 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.newissue.NewIssueFragment">
-    <TextView
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="match_parent"
-        android:text="Step 4" />
-    <TextView
-        android:id="@+id/stepview"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_height="match_parent" />
+    tools:context=".ui.newissue.step4.Step4Fragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="start"
+        android:isScrollContainer="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingVertical="@dimen/activity_vertical_margin">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/label_description"
+            android:layout_weight="1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:inputType="textMultiLine"
+                android:maxLength="4000" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

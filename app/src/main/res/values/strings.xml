@@ -40,11 +40,13 @@
     <string name="new_issue_step7">Zusammenfassung</string>
     <string name="error_load_groups">Service Gruppen können nicht geladen werden</string>
     <string name="error_load_categories">Service Kategorien können nicht geladen werden</string>
-    <string name="error_step1">Bitte wählen Sie zu erst einen Service-Gruppe aus</string>
-    <string name="error_step2">Bitte wählen Sie zu erst einen Service-Kategorie aus</string>
-    <string name="error_step3">Bitte geben Sie zu erst eine Anschrift an</string>
+    <string name="error_step1">Bitte wählen Sie zu erst einen Service-Gruppe aus.</string>
+    <string name="error_step2">Bitte wählen Sie zu erst einen Service-Kategorie aus.</string>
+    <string name="error_step3">Bitte geben Sie zu erst eine Anschrift an.</string>
+    <string name="error_step4">Bitte fügen Sie Ihren Anliegen eine Beschreibung hinzu.</string>
     <string name="label_address">Anschrift (Straße, Wohnort)</string>
     <string name="label_marker">Adresse festlegen</string>
     <string name="map_permissions_hint">Sie können die Karte nicht nutzen, da Sie der App die notwendigen Berechtigungen nicht erteilt haben. Nutzen Sie stattdessen das Textfeld zur Eingabe.</string>
     <string name="map_hint">Halten Sie den Positionsmarker gedrückt, um diesen manuell zu verschieben. Die gewählte Position wird automatisch ins Adressfeld übernommen.</string>
+    <string name="label_description">Bitte beschreiben Sie Ihr Anliegen.</string>
 </resources>
