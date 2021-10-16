@@ -18,6 +18,7 @@ import com.iu.open311.ui.newissue.step3.Step3Fragment;
 import com.iu.open311.ui.newissue.step4.Step4Fragment;
 import com.iu.open311.ui.newissue.step5.Step5Fragment;
 import com.iu.open311.ui.newissue.step6.Step6Fragment;
+import com.iu.open311.ui.newissue.step7.Step7Fragment;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
@@ -47,7 +48,7 @@ public class NewIssueFragment extends Fragment implements Step {
                 case 5:
                     return new Step6Fragment();
                 case 6:
-                    return NewIssueFragment.newInstance(R.layout.fragment_new_issue_6);
+                    return new Step7Fragment();
                 default:
                     throw new IllegalArgumentException("Unsupported position: " + position);
             }
@@ -64,31 +65,6 @@ public class NewIssueFragment extends Fragment implements Step {
             int titleStringId = R.string.new_issue;
             return new StepViewModel.Builder(context).setTitle(titleStringId).create();
         }
-    }
-
-    private static String LAYOUT_RESOURCE_ID_ARG_KEY = "messageResourceId";
-
-    public static NewIssueFragment newInstance(int layoutResId) {
-        Bundle args = new Bundle();
-        args.putInt(LAYOUT_RESOURCE_ID_ARG_KEY, layoutResId);
-        NewIssueFragment fragment = new NewIssueFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-        int resourceId = (int) getArguments().get(LAYOUT_RESOURCE_ID_ARG_KEY);
-        View inflate = inflater.inflate(resourceId, container, false);
-
-        return inflate;
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     @Override

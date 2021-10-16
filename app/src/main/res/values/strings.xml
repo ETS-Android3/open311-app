@@ -55,4 +55,13 @@
     <string name="error_step4">Bitte fügen Sie Ihren Anliegen eine Beschreibung hinzu.</string>
     <string name="error_step6">Bitte geben Sie mindestens Ihre E-Mail-Adresse an.</string>
     <string name="contactdata_hint">Wenn Sie Ihre Kontaktdaten in den Einstellungen hinterlegt haben, dann werden diese hier automatisch eingefügt.</string>
+    <string name="summary_hint">Folgende Daten werden übermittelt, sobald Sie die Schaltfläche "Abschicken" nutzen.</string>
+    <string name="summary_service_group">Service Gruppe:</string>
+    <string name="summary_service_category">Service Kategorie:</string>
+    <string name="summary_service_address">Anschrift:</string>
+    <string name="summary_service_description">Beschreibung:</string>
+    <string name="summary_service_photo">Foto:</string>
+    <string name="summary_service_contact">Kontaktdaten:</string>
+    <string name="address_by_position">Adresse in Karte markiert:</string>
+    <string name="no_photo">Kein Foto hochgeladen:</string>
 </resources>
