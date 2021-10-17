@@ -25,15 +25,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class Client {
     private static Client instance;
     private static Context context;
 
     private final MutableLiveData<List<ServiceRequest>> serviceRequests = new MutableLiveData<>();
+    private final MutableLiveData<List<ServiceRequest>> myServiceRequests = new MutableLiveData<>();
 
     public MutableLiveData<List<ServiceRequest>> getServiceRequests() {
         return serviceRequests;
+    }
+
+    public MutableLiveData<List<ServiceRequest>> getMyServiceRequests() {
+        return myServiceRequests;
     }
 
     private Client() {
@@ -83,6 +89,49 @@ public class Client {
                          );
 
         return serviceRequestLiveData;
+    }
+
+    public void loadMyRequests(Database database) {
+        ThreadExecutorSupplier.getInstance().getMajorBackgroundTasks().execute(() -> {
+            List<Integer> serviceRequestIds = database.myServiceRequestDao()
+                                                      .findAll()
+                                                      .stream()
+                                                      .map(serviceRequest -> serviceRequest.serviceRequestId)
+                                                      .collect(Collectors.toList());
+
+            // todo: this is stubbed until we have an api key and can store custom service requests:
+            if (serviceRequestIds.isEmpty()) {
+                serviceRequestIds.add(1);
+                serviceRequestIds.add(4);
+                serviceRequestIds.add(6);
+            }
+
+            StringJoiner stringJoiner = new StringJoiner(",");
+            serviceRequestIds.forEach(id -> stringJoiner.add(String.valueOf(id)));
+            String apiRequestUrl = createApiRequestUrl("requests") + "&service_request_id=" +
+                    stringJoiner.toString();
+
+            AndroidNetworking.get(apiRequestUrl)
+                             .build()
+                             .getAsObjectList(ServiceRequest.class,
+                                     new ParsedRequestListener<List<ServiceRequest>>() {
+                                         @Override
+                                         public void onResponse(List<ServiceRequest> serviceRequests
+                                         ) {
+                                             Client.this.myServiceRequests.postValue(
+                                                     serviceRequests);
+                                         }
+
+                                         @Override
+                                         public void onError(ANError error) {
+                                             Log.e(Client.class.getSimpleName(),
+                                                     error.getErrorDetail() + ": " +
+                                                             error.getMessage()
+                                             );
+                                         }
+                                     }
+                             );
+        });
     }
 
     public void loadRequests() {

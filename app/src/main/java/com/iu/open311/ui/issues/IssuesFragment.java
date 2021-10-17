@@ -4,35 +4,77 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.iu.open311.DefaultActivity;
+import com.iu.open311.NewIssueActivity;
+import com.iu.open311.database.Database;
 import com.iu.open311.databinding.FragmentIssuesBinding;
+import com.iu.open311.ui.search.AbstractSearchFragment;
 
-public class IssuesFragment extends Fragment {
+public class IssuesFragment extends AbstractSearchFragment {
 
-    private IssuesViewModel issuesViewModel;
     private FragmentIssuesBinding binding;
+
+    private FragmentIssuesBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container
+    ) {
+        if (null == binding) {
+
+            binding = FragmentIssuesBinding.inflate(inflater, container, false);
+        }
+        return binding;
+    }
+
+    @Override
+    protected View getViewRoot(@NonNull LayoutInflater inflater, ViewGroup container) {
+        return getBinding(inflater, container).getRoot();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
+        super.onCreateView(inflater, container, savedInstanceState);
 
-        binding = FragmentIssuesBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        binding = getBinding(inflater, container);
 
-        final TextView textView = binding.textIssues;
-        issuesViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
-        return root;
+        // loading results
+        binding.recyclerList.loading.setVisibility(View.VISIBLE);
+        client.loadMyRequests(Database.getInstance(getContext()));
+        observeMyServiceRequests();
+
+        // Sorting
+        handleSortButton(binding.btnSort);
+
+        // New Issue Button
+        handleNewIssueButton();
+
+        return binding.getRoot();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void handleNewIssueButton() {
+        binding.btnNewIssue.setOnClickListener(view -> {
+            DefaultActivity activity = (DefaultActivity) getActivity();
+            activity.switchActivity(NewIssueActivity.class);
+        });
+    }
+
+    private void observeMyServiceRequests() {
+        client.getMyServiceRequests().observe(getViewLifecycleOwner(), serviceRequests -> {
+            if (null == serviceRequests) {
+                return;
+            }
+            binding.recyclerList.loading.setVisibility(View.GONE);
+            binding.searchCountWrapper.setVisibility(View.VISIBLE);
+            binding.filterWrapper.setVisibility(View.VISIBLE);
+            binding.searchCount.setText(String.valueOf(serviceRequests.size()));
+            entryAdapter.setServiceRequests(serviceRequests);
+        });
     }
 }
