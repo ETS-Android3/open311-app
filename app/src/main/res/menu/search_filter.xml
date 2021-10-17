@@ -6,12 +6,14 @@
         <item
             android:id="@+id/sortDateAsc"
             android:icon="@drawable/sort_up"
+            android:iconTint="@color/black"
             android:orderInCategory="100"
             android:title="@string/sort_date_asc"
             app:showAsAction="never" />
         <item
             android:id="@+id/sortDateDesc"
             android:icon="@drawable/sort_down"
+            android:iconTint="@color/black"
             android:orderInCategory="101"
             android:title="@string/sort_date_desc"
             app:showAsAction="never" />
@@ -20,12 +22,14 @@
         <item
             android:id="@+id/sortCategoryAsc"
             android:icon="@drawable/sort_up"
+            android:iconTint="@color/black"
             android:orderInCategory="110"
             android:title="@string/sort_category_asc"
             app:showAsAction="never" />
         <item
             android:id="@+id/sortCategoryDesc"
             android:icon="@drawable/sort_down"
+            android:iconTint="@color/black"
             android:orderInCategory="111"
             android:title="@string/sort_category_desc"
             app:showAsAction="never" />
@@ -35,12 +39,14 @@
         <item
             android:id="@+id/sortStatusAsc"
             android:icon="@drawable/sort_up"
+            android:iconTint="@color/black"
             android:orderInCategory="120"
             android:title="@string/sort_status_asc"
             app:showAsAction="never" />
         <item
             android:id="@+id/sortStatusDesc"
             android:icon="@drawable/sort_down"
+            android:iconTint="@color/black"
             android:orderInCategory="121"
             android:title="@string/sort_status_desc"
             app:showAsAction="never" />

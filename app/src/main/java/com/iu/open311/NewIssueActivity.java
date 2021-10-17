@@ -88,16 +88,14 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
 
     @Override
     public void onCompleted(View completeButton) {
-
         Client apiClient = Client.getInstance(getApplicationContext());
         apiClient.postRequests(getViewModel());
-        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onError(VerificationError verificationError) {
-        Toast.makeText(this, verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, verificationError.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override

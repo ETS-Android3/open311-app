@@ -1,11 +1,13 @@
 package com.iu.open311.ui.search;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
@@ -57,6 +59,13 @@ public abstract class AbstractSearchFragment extends Fragment {
                         new RecyclerViewTouchListener.ClickListener() {
                             @Override
                             public void onClick(View view, int position) {
+                                InputMethodManager inputMethodManager =
+                                        (InputMethodManager) getActivity().getSystemService(
+                                                Context.INPUT_METHOD_SERVICE);
+                                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
+                                        0
+                                );
+
                                 NavController navController =
                                         Navigation.findNavController(getActivity(),
                                                 R.id.nav_host_fragment_content_main
