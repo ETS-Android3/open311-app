@@ -14,9 +14,9 @@
     <string name="welcome_info">Hier können Sie einfach und bequem Anliegen an die Stadt Rostock melden. Nutzen Sie die App um der Stadt Ihre Probleme und Ideen mitzuteilen.</string>
 
 
-    <string name="app_name">Open311 Rostock</string>
-    <string name="title_activity_main">Open311 Rostock</string>
-    <string name="nav_header_title">Rostock311</string>
+    <string name="app_name">Klarschiff HRO</string>
+    <string name="title_activity_main">Klarschiff HRO</string>
+    <string name="nav_header_title">Klarschiff HRO</string>
     <string name="nav_header_subtitle">Meldeportal für Anliegen</string>
     <string name="nav_header_desc">Logo</string>
     <string name="action_settings">Einstellungen</string>
