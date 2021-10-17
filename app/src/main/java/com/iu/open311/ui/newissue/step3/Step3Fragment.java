@@ -69,7 +69,7 @@ public class Step3Fragment extends AbstractStepFragment
     public VerificationError verifyStep() {
         closeKeyboard(view);
 
-        if (null == getViewModel().getAddress() || getViewModel().getAddress().isEmpty() ||
+        if ((null == getViewModel().getAddress() || getViewModel().getAddress().isEmpty()) &&
                 null == getViewModel().getPosition()) {
             return new VerificationError(getResources().getString(R.string.error_step3));
         }
