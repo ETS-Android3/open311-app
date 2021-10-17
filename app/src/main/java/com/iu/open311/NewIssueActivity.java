@@ -1,6 +1,7 @@
 package com.iu.open311;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +11,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.iu.open311.api.Client;
+import com.iu.open311.api.dto.DefaultResult;
+import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Database;
+import com.iu.open311.database.Result;
+import com.iu.open311.database.repository.MyServiceRequestRepository;
 import com.iu.open311.databinding.ActivityNewIssueBinding;
 import com.iu.open311.ui.newissue.NewIssueFragment;
 import com.iu.open311.ui.newissue.NewIssueViewModel;
@@ -88,9 +94,43 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
 
     @Override
     public void onCompleted(View completeButton) {
-        Client apiClient = Client.getInstance(getApplicationContext());
-        apiClient.postRequests(getViewModel());
-        finish();
+        Client apiClient = Client.getInstance(getApplicationContext(),
+                getResources().getString(R.string.open311_api_key)
+        );
+        MutableLiveData<DefaultResult<Integer>> resultMutable =
+                apiClient.postRequests(getViewModel());
+
+        resultMutable.observe(this, result -> {
+            if (null == result) {
+                return;
+            }
+
+            if (null == result.getError()) {
+                MyServiceRequestRepository repository = MyServiceRequestRepository.getInstance(
+                        Database.getInstance(getApplicationContext()));
+
+                ThreadExecutorSupplier.getInstance().getMajorBackgroundTasks().execute(() -> {
+                    Result<Boolean> insertResult = repository.insert(result.getData());
+                    if (insertResult instanceof Result.Error) {
+                        String errorMessage =
+                                getResources().getString(R.string.error_add_new_issue) + " " +
+                                        getResources().getString(
+                                                R.string.error_add_new_issue_database);
+                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG)
+                             .show();
+                    } else {
+                        Intent data = new Intent();
+                        data.putExtra(MainActivity.INTENT_EXTRA_SHOW_MY_REQUESTS, true);
+                        setResult(RESULT_OK, data);
+                        finish();
+                    }
+                });
+            } else {
+                String errorMessage = getResources().getString(R.string.error_add_new_issue) + " " +
+                        result.getError();
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

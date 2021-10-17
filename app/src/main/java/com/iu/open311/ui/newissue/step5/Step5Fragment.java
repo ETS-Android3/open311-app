@@ -35,9 +35,11 @@ public class Step5Fragment extends AbstractStepFragment {
                                 Intent data = result.getData();
 
                                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                                getViewModel().setPhoto(imageBitmap);
+                                Bitmap scaledBitmap =
+                                        Bitmap.createScaledBitmap(imageBitmap, 300, 300, false);
+                                getViewModel().setPhoto(scaledBitmap);
 
-                                imagePreview.setImageBitmap(imageBitmap);
+                                imagePreview.setImageBitmap(scaledBitmap);
                                 imagePreview.setVisibility(View.VISIBLE);
                                 (view.findViewById(R.id.cameraHint)).setVisibility(View.GONE);
                             }

@@ -112,8 +112,8 @@ public class Step3Fragment extends AbstractStepFragment
             startPosition = getViewModel().getPosition();
             addressField.setText(getViewModel().getAddress());
         } else if (null != lastKnownLocation) {
-            startPosition =
-                    new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+//            startPosition =
+//                    new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
             updateAddressFromLatLng(startPosition);
         }
 

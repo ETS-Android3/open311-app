@@ -1,5 +1,9 @@
 package com.iu.open311.ui.issues;
 
+import static android.app.Activity.RESULT_OK;
+import static com.iu.open311.MainActivity.INTENT_EXTRA_SHOW_MY_REQUESTS;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +11,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.iu.open311.DefaultActivity;
 import com.iu.open311.NewIssueActivity;
 import com.iu.open311.database.Database;
 import com.iu.open311.databinding.FragmentIssuesBinding;
@@ -58,10 +61,21 @@ public class IssuesFragment extends AbstractSearchFragment {
         binding = null;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (data.hasExtra(INTENT_EXTRA_SHOW_MY_REQUESTS) && Boolean.TRUE.equals(
+                    data.getBooleanExtra(INTENT_EXTRA_SHOW_MY_REQUESTS, false))) {
+                client.loadMyRequests(Database.getInstance(getContext()));
+            }
+        }
+    }
+
     private void handleNewIssueButton() {
         binding.btnNewIssue.setOnClickListener(view -> {
-            DefaultActivity activity = (DefaultActivity) getActivity();
-            activity.switchActivity(NewIssueActivity.class);
+            Intent intent = new Intent(getContext(), NewIssueActivity.class);
+            startActivityForResult(intent, 0);
         });
     }
 

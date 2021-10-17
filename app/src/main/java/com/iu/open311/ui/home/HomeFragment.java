@@ -1,5 +1,6 @@
 package com.iu.open311.ui.home;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.preference.PreferenceManager;
 
-import com.iu.open311.DefaultActivity;
 import com.iu.open311.NewIssueActivity;
 import com.iu.open311.R;
 import com.iu.open311.databinding.FragmentHomeBinding;
@@ -42,8 +42,8 @@ public class HomeFragment extends Fragment {
 
     private void initButtonAdd() {
         binding.btnNewIssue.setOnClickListener(view -> {
-            DefaultActivity activity = (DefaultActivity) getActivity();
-            activity.switchActivity(NewIssueActivity.class);
+            Intent intent = new Intent(getContext(), NewIssueActivity.class);
+            startActivityForResult(intent, 0);
         });
     }
 

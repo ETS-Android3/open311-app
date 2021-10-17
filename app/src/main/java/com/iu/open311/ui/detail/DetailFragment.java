@@ -83,7 +83,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     private void initServiceRequestData() {
         int serviceRequestId = getArguments().getInt(ARGS_SERVICE_REQUEST_ID);
-        serviceRequestResult = Client.getInstance(getContext()).loadRequest(serviceRequestId);
+        serviceRequestResult =
+                Client.getInstance(getContext(), getResources().getString(R.string.open311_api_key))
+                      .loadRequest(serviceRequestId);
 
         serviceRequestResult.observe(getViewLifecycleOwner(), result -> {
             if (null == result) {

@@ -37,7 +37,9 @@ public abstract class AbstractSearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        client = Client.getInstance(getContext());
+        client = Client.getInstance(getContext(),
+                getResources().getString(R.string.open311_api_key)
+        );
         rootView = getViewRoot(inflater, container);
 
         initListAdapter();

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ServiceCategoryRepository {
-    private Database database;
+    private final Database database;
 
     private static volatile ServiceCategoryRepository instance;
 
@@ -22,7 +22,7 @@ public class ServiceCategoryRepository {
         return instance;
     }
 
-    public ServiceCategoryRepository(Database database) {
+    public ServiceCategoryRepository(@NonNull Database database) {
         this.database = database;
     }
 

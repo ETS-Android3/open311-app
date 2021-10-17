@@ -1,8 +1,11 @@
 package com.iu.open311.api;
 
+import static java.net.HttpURLConnection.HTTP_OK;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,7 +13,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.iu.open311.BuildConfig;
-import com.iu.open311.R;
 import com.iu.open311.api.dto.DefaultResult;
 import com.iu.open311.api.dto.PostRequestResponse;
 import com.iu.open311.api.dto.ServiceRequest;
@@ -20,6 +22,7 @@ import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.ui.newissue.NewIssueViewModel;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +30,15 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+/**
+ * @see "https://github.com/bfpi/klarschiff-citysdk"
+ */
 public class Client {
     private static Client instance;
-    private static Context context;
 
     private final MutableLiveData<List<ServiceRequest>> serviceRequests = new MutableLiveData<>();
     private final MutableLiveData<List<ServiceRequest>> myServiceRequests = new MutableLiveData<>();
+    private final String apiKey;
 
     public MutableLiveData<List<ServiceRequest>> getServiceRequests() {
         return serviceRequests;
@@ -42,13 +48,13 @@ public class Client {
         return myServiceRequests;
     }
 
-    private Client() {
+    private Client(String apiKey) {
+        this.apiKey = apiKey;
     }
 
-    public synchronized static Client getInstance(Context context) {
-        Client.context = context;
+    public synchronized static Client getInstance(Context context, String apiKey) {
         if (null == instance) {
-            instance = new Client();
+            instance = new Client(apiKey);
             AndroidNetworking.initialize(context);
             AndroidNetworking.setParserFactory(new JacksonParserFactory());
         }
@@ -98,13 +104,6 @@ public class Client {
                                                       .stream()
                                                       .map(serviceRequest -> serviceRequest.serviceRequestId)
                                                       .collect(Collectors.toList());
-
-            // todo: this is stubbed until we have an api key and can store custom service requests:
-            if (serviceRequestIds.isEmpty()) {
-                serviceRequestIds.add(1);
-                serviceRequestIds.add(4);
-                serviceRequestIds.add(6);
-            }
 
             StringJoiner stringJoiner = new StringJoiner(",");
             serviceRequestIds.forEach(id -> stringJoiner.add(String.valueOf(id)));
@@ -185,15 +184,18 @@ public class Client {
                          );
     }
 
-    public void postRequests(NewIssueViewModel viewModel) {
+    public MutableLiveData<DefaultResult<Integer>> postRequests(NewIssueViewModel viewModel
+    ) {
+        MutableLiveData<DefaultResult<Integer>> mutableResult = new MutableLiveData<>();
+        DefaultResult<Integer> defaultResult = new DefaultResult<>();
+
         String requestUrl = createApiRequestUrl("requests");
 
-        // https://github.com/bfpi/klarschiff-citysdk
         StringJoiner urlJoiner = new StringJoiner("&");
         urlJoiner.add(requestUrl);
 
         Map<String, String> apiParams = new HashMap<>();
-        apiParams.put("api_key", "foobar");
+        apiParams.put("api_key", apiKey);
         apiParams.put("email", viewModel.getEmail());
         apiParams.put("service_code", String.valueOf(viewModel.getSelectedServiceCategory().first));
         apiParams.put("description", viewModel.getDescription());
@@ -205,31 +207,52 @@ public class Client {
             apiParams.put("address_string", viewModel.getAddress());
         }
 
-        apiParams.forEach((key, value) -> urlJoiner.add(key + "=" + value));
-
         Log.d(Client.class.getSimpleName(), "Sending request to: " + urlJoiner.toString());
 
-        AndroidNetworking.post(urlJoiner.toString())
-                         .build()
-                         .getAsObject(PostRequestResponse.class, new ParsedRequestListener() {
-                             @Override
-                             public void onResponse(Object response) {
-                                 Log.i(Client.class.getSimpleName(), response.toString());
-                             }
+        ParsedRequestListener<PostRequestResponse> resultListener =
+                new ParsedRequestListener<PostRequestResponse>() {
+                    @Override
+                    public void onResponse(PostRequestResponse response) {
+                        if (null == response.statusCode || response.statusCode.equals(HTTP_OK)) {
+                            defaultResult.setData(response.serviceRequestId);
+                        } else {
+                            defaultResult.setError(response.description);
+                        }
+                        mutableResult.postValue(defaultResult);
+                    }
 
-                             @Override
-                             public void onError(ANError error) {
-                                 Log.e(Client.class.getSimpleName(),
-                                         error.getErrorDetail() + ": " + error.getMessage()
-                                 );
-                                 Toast.makeText(context, R.string.error_add_new_issue,
-                                         Toast.LENGTH_SHORT
-                                 ).show();
-                                 Toast.makeText(context, error.getErrorDetail(), Toast.LENGTH_LONG)
-                                      .show();
-                             }
-                         });
+                    @Override
+                    public void onError(ANError error) {
+                        Log.e(Client.class.getSimpleName(),
+                                error.getErrorDetail() + ": " + error.getMessage()
+                        );
+                        defaultResult.setError(error.getErrorDetail());
+                        mutableResult.postValue(defaultResult);
+                    }
+                };
+
+        if (null != viewModel.getPhoto()) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            viewModel.getPhoto().compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            AndroidNetworking.post(urlJoiner.toString())
+                             .addBodyParameter(apiParams)
+                             .addBodyParameter("photo_required", "true")
+                             .addBodyParameter("media",
+                                     Base64.encodeToString(byteArray, Base64.DEFAULT)
+                             )
+                             .build()
+                             .getAsObject(PostRequestResponse.class, resultListener);
+        } else {
+            AndroidNetworking.post(urlJoiner.toString())
+                             .addBodyParameter(apiParams)
+                             .build()
+                             .getAsObject(PostRequestResponse.class, resultListener);
+        }
+
+        return mutableResult;
     }
+
 
     private String createApiRequestUrl(String service) {
         return BuildConfig.API_BASE_URL + service + ".json?jurisdiction_id=" +
