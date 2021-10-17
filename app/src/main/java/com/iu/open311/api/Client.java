@@ -4,11 +4,16 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.iu.open311.BuildConfig;
 import com.iu.open311.R;
+import com.iu.open311.api.dto.PostRequestResponse;
+import com.iu.open311.api.dto.ServiceRequest;
+import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Database;
 import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.ui.newissue.NewIssueViewModel;
@@ -24,6 +29,15 @@ public class Client {
     private static Client instance;
     private static Context context;
 
+    private final MutableLiveData<List<ServiceRequest>> serviceRequests = new MutableLiveData<>();
+
+    public MutableLiveData<List<ServiceRequest>> getServiceRequests() {
+        return serviceRequests;
+    }
+
+    private Client() {
+    }
+
     public synchronized static Client getInstance(Context context) {
         Client.context = context;
         if (null == instance) {
@@ -34,7 +48,58 @@ public class Client {
         return instance;
     }
 
-    public void postNewIssue(NewIssueViewModel viewModel) {
+    public void loadRequests() {
+        AndroidNetworking.get(createApiRequestUrl("requests"))
+                         .build()
+                         .getAsObjectList(ServiceRequest.class,
+                                 new ParsedRequestListener<List<ServiceRequest>>() {
+                                     @Override
+                                     public void onResponse(List<ServiceRequest> serviceRequests
+                                     ) {
+                                         Client.this.serviceRequests.postValue(serviceRequests);
+                                     }
+
+                                     @Override
+                                     public void onError(ANError error) {
+                                         Log.e(Client.class.getSimpleName(),
+                                                 error.getErrorDetail() + ": " + error.getMessage()
+                                         );
+                                     }
+                                 }
+                         );
+    }
+
+    public void loadServices(Database database) throws IOException {
+        AndroidNetworking.get(createApiRequestUrl("services"))
+                         .build()
+                         .getAsObjectList(ServiceCategory.class,
+                                 new ParsedRequestListener<List<ServiceCategory>>() {
+                                     @Override
+                                     public void onResponse(List<ServiceCategory> serviceCategories
+                                     ) {
+                                         ThreadExecutorSupplier.getInstance()
+                                                               .getMajorBackgroundTasks()
+                                                               .execute(() -> {
+                                                                   database.serviceCategoryDao()
+                                                                           .deleteAll();
+                                                                   serviceCategories.forEach(
+                                                                           serviceCategory -> database
+                                                                                   .serviceCategoryDao()
+                                                                                   .insert(serviceCategory));
+                                                               });
+                                     }
+
+                                     @Override
+                                     public void onError(ANError error) {
+                                         Log.e(Client.class.getSimpleName(),
+                                                 error.getErrorDetail() + ": " + error.getMessage()
+                                         );
+                                     }
+                                 }
+                         );
+    }
+
+    public void postRequests(NewIssueViewModel viewModel) {
         String requestUrl = createApiRequestUrl("requests");
 
         // https://github.com/bfpi/klarschiff-citysdk
@@ -68,37 +133,16 @@ public class Client {
 
                              @Override
                              public void onError(ANError error) {
-                                 Log.e(Client.class.getSimpleName(), error.getErrorDetail());
+                                 Log.e(Client.class.getSimpleName(),
+                                         error.getErrorDetail() + ": " + error.getMessage()
+                                 );
                                  Toast.makeText(context, R.string.error_add_new_issue,
                                          Toast.LENGTH_SHORT
                                  ).show();
-                                 Toast.makeText(context, error.getErrorDetail(), Toast.LENGTH_LONG).show();
+                                 Toast.makeText(context, error.getErrorDetail(), Toast.LENGTH_LONG)
+                                      .show();
                              }
                          });
-    }
-
-    public void initServiceCategories(Database database) throws IOException {
-        AndroidNetworking.get(createApiRequestUrl("services"))
-                         .build()
-                         .getAsObjectList(ServiceCategory.class,
-                                 new ParsedRequestListener<List<ServiceCategory>>() {
-                                     @Override
-                                     public void onResponse(List<ServiceCategory> serviceCategories
-                                     ) {
-                                         new Thread(() -> {
-                                             database.serviceCategoryDao().deleteAll();
-                                             serviceCategories.forEach(
-                                                     serviceCategory -> database.serviceCategoryDao()
-                                                                                .insert(serviceCategory));
-                                         }).start();
-                                     }
-
-                                     @Override
-                                     public void onError(ANError error) {
-                                         Log.e(Client.class.getSimpleName(), error.getErrorDetail());
-                                     }
-                                 }
-                         );
     }
 
     private String createApiRequestUrl(String service) {

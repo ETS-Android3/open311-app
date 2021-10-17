@@ -10,6 +10,7 @@
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/fahrradverkehr.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/ffentlichernahverkehr.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/ffentlichesgrnspielplatz.xml" value="0.2578125" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/filter.xml" value="0.3828125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/fugnger.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/gehwegradwegstrae.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/gewerberecht.xml" value="0.2578125" />
@@ -27,6 +28,8 @@
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/mllschmutz.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/parken.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/side_nav_bar.xml" value="0.25885416666666666" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/sort_down.xml" value="0.3828125" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/sort_up.xml" value="0.3828125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/stadtmbel.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/stadtmbelbeleuchtung.xml" value="0.2578125" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/drawable/straenverkehr.xml" value="0.2578125" />
@@ -44,7 +47,7 @@
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/content_home.xml" value="0.15760869565217392" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/content_main.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/content_new_issue.xml" value="0.24166666666666667" />
-        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/content_recycler_list.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/content_recycler_list.xml" value="0.1" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_add.xml" value="0.3220108695652174" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_gallery.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_home.xml" value="0.24166666666666667" />
@@ -61,15 +64,18 @@
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_new_issue_step4.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_new_issue_step5.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_new_issue_step6.xml" value="0.24166666666666667" />
-        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_search.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/nav_header_main.xml" value="0.24270833333333333" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/preference_text_email.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/preference_text_number.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/service_category_list_item.xml" value="0.1" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/service_group_list_item.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/service_request_list_item.xml" value="0.12590579710144928" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/service_request_list_row.xml" value="0.31476449275362317" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/layout/settings_activity.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/menu/activity_home_drawer.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/menu/main.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/menu/search_filter.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.25885416666666666" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.25885416666666666" />
         <entry key="..\:/Users/susan/AndroidStudioProjects/Open311Rostock/app/src/main/res/xml/root_preferences.xml" value="0.24166666666666667" />

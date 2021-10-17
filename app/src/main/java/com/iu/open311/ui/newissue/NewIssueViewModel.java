@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Result;
 import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.database.repository.ServiceCategoryRepository;
@@ -136,7 +137,7 @@ public class NewIssueViewModel extends ViewModel {
     public void loadServiceCategories() {
         if (!startedLoadingServiceCategories) {
             startedLoadingServiceCategories = true;
-            new Thread(() -> {
+            ThreadExecutorSupplier.getInstance().getMajorBackgroundTasks().execute(() -> {
                 Result<List<ServiceCategory>> result = categoryRepository.findAll();
                 if (result instanceof Result.Success) {
                     this.serviceCategories.postValue(
@@ -145,7 +146,7 @@ public class NewIssueViewModel extends ViewModel {
                     Log.e(this.getClass().getSimpleName(), "Could not load service categories");
                     this.serviceCategories.postValue(new ArrayList<>());
                 }
-            }).start();
+            });
         }
     }
 }

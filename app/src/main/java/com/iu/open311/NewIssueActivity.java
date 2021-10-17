@@ -3,7 +3,6 @@ package com.iu.open311;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,8 +20,6 @@ import com.iu.open311.ui.newissue.NewIssueViewModel;
 import com.iu.open311.ui.newissue.NewIssueViewModelFactory;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-
-import java.io.IOException;
 
 public class NewIssueActivity extends DefaultActivity implements StepperLayout.StepperListener {
 
@@ -93,7 +90,7 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
     public void onCompleted(View completeButton) {
 
         Client apiClient = Client.getInstance(getApplicationContext());
-        apiClient.postNewIssue(getViewModel());
+        apiClient.postRequests(getViewModel());
         Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
         finish();
     }

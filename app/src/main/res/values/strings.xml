@@ -68,4 +68,20 @@
     <string name="photo_hint">Wenn Sie mögen können Sie über das Kamera-Symbol optional ein Foto zu Ihrer Anfrage hinzufügen.</string>
     <string name="error_camera">Die Kamera kann im Moment nicht verwendet werden.</string>
     <string name="error_network">Sie haben keine Verbindung zum Internet. Die App kann deshalb nicht im vollen Umfang genutzt werden.</string>
+    <string name="label_status">Status:</string>
+    <string name="status_pending">offen</string>
+    <string name="status_reviewed">überprüft</string>
+    <string name="status_in_process">in Bearbeitung</string>
+    <string name="status_received">eingegangen</string>
+    <string name="status_rejected">abgelehnt</string>
+    <string name="status_processed">erledigt</string>
+    <string name="status_closed">geschlossen</string>
+    <string name="search_count">Treffer gefunden</string>
+    <string name="label_search">Suche</string>
+    <string name="sort_category_asc">Kategorie aufsteigend</string>
+    <string name="sort_category_desc">Kategorie absteigend</string>
+    <string name="sort_status_asc">Status aufsteigend</string>
+    <string name="sort_status_desc">Status absteigend</string>
+    <string name="sort_date_asc">Datum aufsteigend</string>
+    <string name="sort_date_desc">Datum absteigend</string>
 </resources>

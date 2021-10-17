@@ -1,4 +1,4 @@
-package com.iu.open311.api;
+package com.iu.open311.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

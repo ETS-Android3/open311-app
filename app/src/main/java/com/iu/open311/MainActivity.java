@@ -11,7 +11,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.iu.open311.api.Client;
 import com.iu.open311.database.Database;
 import com.iu.open311.databinding.ActivityMainBinding;
@@ -65,7 +64,7 @@ public class MainActivity extends DefaultActivity {
     private void initServiceCategories() {
         Client apiClient = Client.getInstance(getApplicationContext());
         try {
-            apiClient.initServiceCategories(Database.getInstance(getApplicationContext()));
+            apiClient.loadServices(Database.getInstance(getApplicationContext()));
         } catch (IOException e) {
             Log.e(this.getClass().getSimpleName(),
                     "Could not load service categories: " + e.getMessage()
