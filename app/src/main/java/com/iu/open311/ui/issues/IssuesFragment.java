@@ -14,19 +14,19 @@ import com.iu.open311.databinding.FragmentIssuesBinding;
 
 public class IssuesFragment extends Fragment {
 
-    private IssuessViewModel issuessViewModel;
+    private IssuesViewModel issuesViewModel;
     private FragmentIssuesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        issuessViewModel = new ViewModelProvider(this).get(IssuessViewModel.class);
+        issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
         binding = FragmentIssuesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textIssues;
-        issuessViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
+        issuesViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
         return root;
     }
 

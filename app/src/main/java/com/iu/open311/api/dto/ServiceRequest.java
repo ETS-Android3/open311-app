@@ -43,10 +43,10 @@ public class ServiceRequest {
     public String address;
 
     @JsonProperty("lat")
-    public float latitude;
+    public Float latitude;
 
     @JsonProperty("long")
-    public float longitude;
+    public Float longitude;
 
     @JsonProperty("media_url")
     public String mediaUrl;

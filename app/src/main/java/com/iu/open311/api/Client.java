@@ -11,6 +11,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.iu.open311.BuildConfig;
 import com.iu.open311.R;
+import com.iu.open311.api.dto.DefaultResult;
 import com.iu.open311.api.dto.PostRequestResponse;
 import com.iu.open311.api.dto.ServiceRequest;
 import com.iu.open311.common.threads.ThreadExecutorSupplier;
@@ -46,6 +47,42 @@ public class Client {
             AndroidNetworking.setParserFactory(new JacksonParserFactory());
         }
         return instance;
+    }
+
+    public MutableLiveData<DefaultResult<ServiceRequest>> loadRequest(Integer serviceRequestId) {
+
+        MutableLiveData<DefaultResult<ServiceRequest>> serviceRequestLiveData =
+                new MutableLiveData<>();
+        DefaultResult<ServiceRequest> result = new DefaultResult<>();
+
+        AndroidNetworking.get(createApiRequestUrl("requests/" + serviceRequestId))
+                         .build()
+                         .getAsObjectList(ServiceRequest.class,
+                                 new ParsedRequestListener<List<ServiceRequest>>() {
+                                     @Override
+                                     public void onResponse(List<ServiceRequest> serviceRequests
+                                     ) {
+                                         if (serviceRequests.size() > 0) {
+                                             result.setData(serviceRequests.get(0));
+                                         } else {
+                                             result.setError("No data found");
+                                         }
+                                         serviceRequestLiveData.postValue(result);
+                                     }
+
+                                     @Override
+                                     public void onError(ANError error) {
+                                         Log.e(Client.class.getSimpleName(),
+                                                 error.getErrorDetail() + ": " + error.getMessage()
+                                         );
+
+                                         result.setError(error.getErrorDetail());
+                                         serviceRequestLiveData.postValue(result);
+                                     }
+                                 }
+                         );
+
+        return serviceRequestLiveData;
     }
 
     public void loadRequests() {

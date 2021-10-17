@@ -84,4 +84,9 @@
     <string name="sort_status_desc">Status absteigend</string>
     <string name="sort_date_asc">Datum aufsteigend</string>
     <string name="sort_date_desc">Datum absteigend</string>
+    <string name="menu_detail">Details</string>
+    <string name="error_detail">Fehler beim Laden der Detailansicht</string>
+    <string name="label_requesttime">Erstellt am:</string>
+    <string name="label_updatedtime">Letzte Aktualisierung:</string>
+    <string name="label_agency">Zuständiges Amt:</string>
 </resources>

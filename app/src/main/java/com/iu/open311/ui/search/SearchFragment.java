@@ -10,13 +10,17 @@ import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.iu.open311.R;
 import com.iu.open311.api.Client;
+import com.iu.open311.api.dto.ServiceRequest;
 import com.iu.open311.common.RecyclerViewTouchListener;
 import com.iu.open311.databinding.FragmentSearchBinding;
+import com.iu.open311.ui.detail.DetailFragment;
 
 public class SearchFragment extends Fragment {
     private FragmentSearchBinding binding;
@@ -66,7 +70,17 @@ public class SearchFragment extends Fragment {
                         new RecyclerViewTouchListener.ClickListener() {
                             @Override
                             public void onClick(View view, int position) {
-                                // show details
+                                NavController navController =
+                                        Navigation.findNavController(getActivity(),
+                                                R.id.nav_host_fragment_content_main
+                                        );
+                                Bundle bundle = new Bundle();
+                                ServiceRequest serviceRequest =
+                                        entryAdapter.getByPosition(position);
+                                bundle.putInt(DetailFragment.ARGS_SERVICE_REQUEST_ID,
+                                        serviceRequest.serviceRequestId
+                                );
+                                navController.navigate(R.id.nav_details, bundle);
                             }
 
                             @Override

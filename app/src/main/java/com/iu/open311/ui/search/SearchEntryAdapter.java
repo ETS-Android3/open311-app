@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.iu.open311.R;
 import com.iu.open311.api.dto.ServiceRequest;
+import com.iu.open311.common.DateUtils;
 import com.iu.open311.common.ImageCache;
+import com.iu.open311.common.StatusTranslater;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -71,40 +71,34 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
     public void sortServiceRequests(SearchOrderEnum searchOrder) {
         switch (searchOrder) {
             case CATEGORY_ASC:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getServiceName,
-                                Comparator.nullsLast(Comparator.naturalOrder())
-                        ));
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getServiceName,
+                        Comparator.nullsLast(Comparator.naturalOrder())
+                ));
                 break;
             case CATEGORY_DESC:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getServiceName,
-                                Comparator.nullsFirst(Comparator.naturalOrder())
-                        ).reversed());
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getServiceName,
+                        Comparator.nullsFirst(Comparator.naturalOrder())
+                ).reversed());
                 break;
             case STATUS_ASC:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getStatus,
-                                Comparator.nullsLast(Comparator.naturalOrder())
-                        ));
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getStatus,
+                        Comparator.nullsLast(Comparator.naturalOrder())
+                ));
                 break;
             case STATUS_DESC:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getStatus,
-                                Comparator.nullsFirst(Comparator.naturalOrder())
-                        ).reversed());
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getStatus,
+                        Comparator.nullsFirst(Comparator.naturalOrder())
+                ).reversed());
                 break;
             case DATE_DESC:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getRequestedDatetime,
-                                Comparator.nullsFirst(Comparator.naturalOrder())
-                        ).reversed());
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getRequestedDatetime,
+                        Comparator.nullsFirst(Comparator.naturalOrder())
+                ).reversed());
                 break;
             default:
-                this.serviceRequests.sort(
-                        Comparator.comparing(ServiceRequest::getRequestedDatetime,
-                                Comparator.nullsLast(Comparator.naturalOrder())
-                        ));
+                this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getRequestedDatetime,
+                        Comparator.nullsLast(Comparator.naturalOrder())
+                ));
                 break;
         }
 
@@ -161,12 +155,14 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.getServiceName().setText(serviceRequests.get(position).serviceName);
-        viewHolder.getStatus().setText(determineStatus(serviceRequests.get(position).status));
+        viewHolder.getStatus()
+                  .setText(StatusTranslater.determineStatus(resources,
+                          serviceRequests.get(position).status
+                  ));
 
         viewHolder.getRequestDateTime()
-                  .setText(serviceRequests.get(position).requestedDatetime.format(
-                          DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-                                           .withLocale(Locale.GERMAN)));
+                  .setText(DateUtils.formatLocalDateTime(
+                          serviceRequests.get(position).requestedDatetime));
 
         String mediaUrl = serviceRequests.get(position).mediaUrl;
         if (null != mediaUrl) {
@@ -186,26 +182,5 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
     @Override
     public int getItemCount() {
         return null == this.serviceRequests ? 0 : this.serviceRequests.size();
-    }
-
-    private String determineStatus(String statusKey) {
-        switch (statusKey.toLowerCase()) {
-            case "pending":
-                return resources.getString(R.string.status_pending);
-            case "received":
-                return resources.getString(R.string.status_received);
-            case "in_process":
-                return resources.getString(R.string.status_in_process);
-            case "reviewed":
-                return resources.getString(R.string.status_reviewed);
-            case "processed":
-                return resources.getString(R.string.status_processed);
-            case "rejected":
-                return resources.getString(R.string.status_rejected);
-            case "closed":
-                return resources.getString(R.string.status_closed);
-            default:
-                return statusKey;
-        }
     }
 }
