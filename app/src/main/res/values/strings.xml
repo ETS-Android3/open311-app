@@ -89,4 +89,5 @@
     <string name="label_requesttime">Erstellt am:</string>
     <string name="label_updatedtime">Letzte Aktualisierung:</string>
     <string name="label_agency">Zuständiges Amt:</string>
+    <string name="title_search">Meldungen durchsuchen</string>
 </resources>

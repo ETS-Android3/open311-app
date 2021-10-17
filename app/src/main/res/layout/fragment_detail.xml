@@ -5,142 +5,148 @@
     android:layout_height="match_parent"
     tools:context=".ui.detail.DetailFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:isScrollContainer="true"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"
-            android:visibility="visible" />
-
         <LinearLayout
-            android:id="@+id/contentWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:visibility="gone">
+            android:isScrollContainer="true"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/serviceName"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_small_margin"
-                android:text="Placeholder" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="@dimen/activity_vertical_margin"
+                android:visibility="visible" />
 
             <LinearLayout
+                android:id="@+id/contentWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/serviceName"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_small_margin"
+                    android:text="Placeholder" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:gravity="start"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        style="@style/TextAppearance.MaterialComponents.Caption"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_status" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/status"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_small_margin"
-                        android:text="Placeholder" />
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_status" />
 
-                    <TextView
-                        style="@style/TextAppearance.MaterialComponents.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_requesttime" />
+                        <TextView
+                            android:id="@+id/status"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_vertical_small_margin"
+                            android:text="Placeholder" />
 
-                    <TextView
-                        android:id="@+id/requestDateTime"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_small_margin"
-                        android:text="Placeholder" />
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_requesttime" />
 
-                    <TextView
-                        style="@style/TextAppearance.MaterialComponents.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_updatedtime" />
+                        <TextView
+                            android:id="@+id/requestDateTime"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_vertical_small_margin"
+                            android:text="Placeholder" />
 
-                    <TextView
-                        android:id="@+id/updated_datetime"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_small_margin"
-                        android:text="Placeholder" />
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_updatedtime" />
 
-                    <TextView
-                        style="@style/TextAppearance.MaterialComponents.Caption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_agency" />
+                        <TextView
+                            android:id="@+id/updated_datetime"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_vertical_small_margin"
+                            android:text="Placeholder" />
 
-                    <TextView
-                        android:id="@+id/agencyResponsible"
-                        style="@style/TextAppearance.MaterialComponents.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_vertical_small_margin"
-                        android:text="Placeholder" />
+                        <TextView
+                            style="@style/TextAppearance.MaterialComponents.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_agency" />
+
+                        <TextView
+                            android:id="@+id/agencyResponsible"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_vertical_small_margin"
+                            android:text="Placeholder" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imagePreview"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imagePreview"
-                    android:layout_width="150dp"
+                <TextView
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/summary_service_description" />
+
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:text="Placeholder" />
+
+
+                <TextView
+                    android:id="@+id/address"
+                    style="@style/TextAppearance.MaterialComponents.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Placeholder" />
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop" />
+                    android:layout_weight="0" />
             </LinearLayout>
-
-            <TextView
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/summary_service_description" />
-
-            <TextView
-                android:id="@+id/description"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="Placeholder" />
-
-
-            <TextView
-                android:id="@+id/address"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Placeholder" />
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0" />
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
