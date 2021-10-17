@@ -59,12 +59,7 @@ public abstract class AbstractSearchFragment extends Fragment {
                         new RecyclerViewTouchListener.ClickListener() {
                             @Override
                             public void onClick(View view, int position) {
-                                InputMethodManager inputMethodManager =
-                                        (InputMethodManager) getActivity().getSystemService(
-                                                Context.INPUT_METHOD_SERVICE);
-                                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),
-                                        0
-                                );
+                                closeKeyboard(view);
 
                                 NavController navController =
                                         Navigation.findNavController(getActivity(),
@@ -89,6 +84,7 @@ public abstract class AbstractSearchFragment extends Fragment {
 
     protected void handleSortButton(Button button) {
         button.setOnClickListener(view -> {
+            closeKeyboard(view);
             PopupMenu popupMenu = new PopupMenu(getActivity(), view);
             popupMenu.getMenuInflater().inflate(R.menu.search_filter, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
@@ -138,5 +134,11 @@ public abstract class AbstractSearchFragment extends Fragment {
                 searchCountField.setText(String.valueOf(searchCount));
             }
         });
+    }
+
+    private void closeKeyboard(View view) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
