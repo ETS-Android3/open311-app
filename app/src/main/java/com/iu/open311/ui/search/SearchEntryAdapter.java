@@ -28,8 +28,8 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
     private final List<ServiceRequest> serviceRequests = new ArrayList<>();
     private final List<ServiceRequest> allServiceRequests = new ArrayList<>();
 
-    private Resources resources;
-    private LifecycleOwner lifecycleOwner;
+    private final Resources resources;
+    private final LifecycleOwner lifecycleOwner;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView serviceName;
@@ -112,13 +112,9 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
                                                   .contains(searchString.toLowerCase())) {
                         return true;
                     }
-                    if (serviceRequest.description.toLowerCase()
-                                                  .contains(
-                                                          searchString.toLowerCase(Locale.ROOT))) {
-                        return true;
-                    }
-
-                    return false;
+                    return serviceRequest.description.toLowerCase()
+                                                     .contains(
+                                                             searchString.toLowerCase(Locale.ROOT));
                 }).collect(Collectors.toList());
 
         this.serviceRequests.clear();
@@ -136,10 +132,9 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
         this.allServiceRequests.addAll(serviceRequests);
         this.serviceRequests.clear();
         this.serviceRequests.addAll(serviceRequests);
-        this.serviceRequests.sort(
-                Comparator.comparing(serviceRequest -> serviceRequest.requestedDatetime,
-                        Comparator.nullsLast(Comparator.naturalOrder())
-                ));
+        this.serviceRequests.sort(Comparator.comparing(ServiceRequest::getRequestedDatetime,
+                Comparator.nullsLast(Comparator.naturalOrder())
+        ).reversed());
         notifyDataSetChanged();
     }
 
@@ -181,6 +176,6 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
 
     @Override
     public int getItemCount() {
-        return null == this.serviceRequests ? 0 : this.serviceRequests.size();
+        return this.serviceRequests.size();
     }
 }
