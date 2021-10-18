@@ -178,4 +178,14 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
     public int getItemCount() {
         return this.serviceRequests.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }
