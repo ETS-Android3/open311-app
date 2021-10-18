@@ -19,11 +19,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.iu.open311.R;
 import com.iu.open311.api.Client;
-import com.iu.open311.api.dto.DefaultResult;
 import com.iu.open311.api.dto.ServiceRequest;
 import com.iu.open311.common.DateUtils;
 import com.iu.open311.common.ImageCache;
 import com.iu.open311.common.StatusTranslater;
+import com.iu.open311.database.Result;
 import com.iu.open311.databinding.FragmentDetailBinding;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
@@ -33,8 +33,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private FragmentDetailBinding binding;
     private MapView mapView;
 
-    private MutableLiveData<DefaultResult<ServiceRequest>> serviceRequestResult =
-            new MutableLiveData<>();
+    private MutableLiveData<Result<ServiceRequest>> serviceRequestResult = new MutableLiveData<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
@@ -92,14 +91,15 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 return;
             }
 
-            if (null != result.getError()) {
-                String errorMessage =
-                        getResources().getString(R.string.error_detail) + ": " + result.getError();
+            if (result instanceof Result.Error) {
+                String errorMessage = getResources().getString(R.string.error_detail) + ": " +
+                        ((Result.Error) result).getError();
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
                 return;
             }
 
-            ServiceRequest serviceRequest = result.getData();
+
+            ServiceRequest serviceRequest = (ServiceRequest) ((Result.Success) result).getData();
 
             binding.contentWrapper.setVisibility(View.VISIBLE);
             binding.loading.setVisibility(View.GONE);
@@ -131,8 +131,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         serviceRequestResult.observe(getViewLifecycleOwner(), result -> {
-            if (null != result && null != result.getData()) {
-                ServiceRequest serviceRequest = result.getData();
+            if (null != result && result instanceof Result.Success) {
+                ServiceRequest serviceRequest =
+                        (ServiceRequest) ((Result.Success) result).getData();
                 LatLng position = new LatLng(54.083336, 12.108811); // Rostock
                 if (null != serviceRequest.longitude && null != serviceRequest.latitude) {
                     position = new LatLng(serviceRequest.latitude, serviceRequest.longitude);

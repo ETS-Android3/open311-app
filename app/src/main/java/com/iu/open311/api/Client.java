@@ -13,17 +13,17 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.iu.open311.BuildConfig;
-import com.iu.open311.api.dto.DefaultResult;
 import com.iu.open311.api.dto.PostRequestResponse;
 import com.iu.open311.api.dto.ServiceRequest;
 import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Database;
+import com.iu.open311.database.Result;
 import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.ui.newissue.NewIssueViewModel;
 import com.jacksonandroidnetworking.JacksonParserFactory;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,11 +61,9 @@ public class Client {
         return instance;
     }
 
-    public MutableLiveData<DefaultResult<ServiceRequest>> loadRequest(Integer serviceRequestId) {
+    public MutableLiveData<Result<ServiceRequest>> loadRequest(Integer serviceRequestId) {
 
-        MutableLiveData<DefaultResult<ServiceRequest>> serviceRequestLiveData =
-                new MutableLiveData<>();
-        DefaultResult<ServiceRequest> result = new DefaultResult<>();
+        MutableLiveData<Result<ServiceRequest>> result = new MutableLiveData<>();
 
         AndroidNetworking.get(createApiRequestUrl("requests/" + serviceRequestId))
                          .build()
@@ -75,26 +73,29 @@ public class Client {
                                      public void onResponse(List<ServiceRequest> serviceRequests
                                      ) {
                                          if (serviceRequests.size() > 0) {
-                                             result.setData(serviceRequests.get(0));
+                                             result.postValue(new Result.Success<ServiceRequest>(
+                                                     serviceRequests.get(0)));
                                          } else {
-                                             result.setError("No data found");
+                                             result.postValue(new Result.Error(
+                                                     new Exception("No data found")));
                                          }
-                                         serviceRequestLiveData.postValue(result);
                                      }
 
                                      @Override
                                      public void onError(ANError error) {
-                                         Log.e(Client.class.getSimpleName(),
-                                                 error.getErrorDetail() + ": " + error.getMessage()
-                                         );
-
-                                         result.setError(error.getErrorDetail());
-                                         serviceRequestLiveData.postValue(result);
+                                         String errorMessage = error.getErrorDetail() + ": " +
+                                                 (null == error.getResponse() ?
+                                                         "" :
+                                                         error.getResponse().message()
+                                                 );
+                                         Log.e(Client.class.getSimpleName(), errorMessage);
+                                         result.postValue(
+                                                 new Result.Error(new Exception(errorMessage)));
                                      }
                                  }
                          );
 
-        return serviceRequestLiveData;
+        return result;
     }
 
     public void loadMyRequests(Database database) {
@@ -104,6 +105,11 @@ public class Client {
                                                       .stream()
                                                       .map(serviceRequest -> serviceRequest.serviceRequestId)
                                                       .collect(Collectors.toList());
+
+            if (serviceRequestIds.isEmpty()) {
+                myServiceRequests.postValue(new ArrayList<>());
+                return;
+            }
 
             StringJoiner stringJoiner = new StringJoiner(",");
             serviceRequestIds.forEach(id -> stringJoiner.add(String.valueOf(id)));
@@ -123,10 +129,12 @@ public class Client {
 
                                          @Override
                                          public void onError(ANError error) {
-                                             Log.e(Client.class.getSimpleName(),
-                                                     error.getErrorDetail() + ": " +
-                                                             error.getMessage()
+                                             String errorMessage = error.getErrorDetail() + ": " + (
+                                                     null == error.getResponse() ?
+                                                             "" :
+                                                             error.getResponse().message()
                                              );
+                                             Log.e(Client.class.getSimpleName(), errorMessage);
                                          }
                                      }
                              );
@@ -146,15 +154,20 @@ public class Client {
 
                                      @Override
                                      public void onError(ANError error) {
-                                         Log.e(Client.class.getSimpleName(),
-                                                 error.getErrorDetail() + ": " + error.getMessage()
-                                         );
+                                         String errorMessage = error.getErrorDetail() + ": " +
+                                                 (null == error.getResponse() ?
+                                                         "" :
+                                                         error.getResponse().message()
+                                                 );
+                                         Log.e(Client.class.getSimpleName(), errorMessage);
                                      }
                                  }
                          );
     }
 
-    public void loadServices(Database database) throws IOException {
+    public MutableLiveData<Result<List<ServiceCategory>>> loadServices() {
+        MutableLiveData<Result<List<ServiceCategory>>> mutableResult = new MutableLiveData<>();
+
         AndroidNetworking.get(createApiRequestUrl("services"))
                          .build()
                          .getAsObjectList(ServiceCategory.class,
@@ -162,32 +175,31 @@ public class Client {
                                      @Override
                                      public void onResponse(List<ServiceCategory> serviceCategories
                                      ) {
-                                         ThreadExecutorSupplier.getInstance()
-                                                               .getMajorBackgroundTasks()
-                                                               .execute(() -> {
-                                                                   database.serviceCategoryDao()
-                                                                           .deleteAll();
-                                                                   serviceCategories.forEach(
-                                                                           serviceCategory -> database
-                                                                                   .serviceCategoryDao()
-                                                                                   .insert(serviceCategory));
-                                                               });
+                                         mutableResult.postValue(
+                                                 new Result.Success<List<ServiceCategory>>(
+                                                         serviceCategories));
                                      }
 
                                      @Override
                                      public void onError(ANError error) {
-                                         Log.e(Client.class.getSimpleName(),
-                                                 error.getErrorDetail() + ": " + error.getMessage()
-                                         );
+                                         String errorMessage = error.getErrorDetail() + ": " +
+                                                 (null == error.getResponse() ?
+                                                         "" :
+                                                         error.getResponse().message()
+                                                 );
+                                         Log.e(Client.class.getSimpleName(), errorMessage);
+                                         mutableResult.postValue(
+                                                 new Result.Error(new Exception(errorMessage)));
                                      }
                                  }
                          );
+
+        return mutableResult;
     }
 
-    public MutableLiveData<DefaultResult<Integer>> postRequests(NewIssueViewModel viewModel
+    public MutableLiveData<Result<Integer>> postRequests(NewIssueViewModel viewModel
     ) {
-        MutableLiveData<DefaultResult<Integer>> mutableResult = new MutableLiveData<>();
-        DefaultResult<Integer> defaultResult = new DefaultResult<>();
+        MutableLiveData<Result<Integer>> mutableResult = new MutableLiveData<>();
 
         String requestUrl = createApiRequestUrl("requests");
 
@@ -214,20 +226,20 @@ public class Client {
                     @Override
                     public void onResponse(PostRequestResponse response) {
                         if (null == response.statusCode || response.statusCode.equals(HTTP_OK)) {
-                            defaultResult.setData(response.serviceRequestId);
+                            mutableResult.postValue(
+                                    new Result.Success<Integer>(response.serviceRequestId));
                         } else {
-                            defaultResult.setError(response.description);
+                            mutableResult.postValue(
+                                    new Result.Error(new Exception(response.description)));
                         }
-                        mutableResult.postValue(defaultResult);
                     }
 
                     @Override
                     public void onError(ANError error) {
-                        Log.e(Client.class.getSimpleName(),
-                                error.getErrorDetail() + ": " + error.getMessage()
-                        );
-                        defaultResult.setError(error.getErrorDetail());
-                        mutableResult.postValue(defaultResult);
+                        String errorMessage = error.getErrorDetail() + ": " +
+                                (null == error.getResponse() ? "" : error.getResponse().message());
+                        Log.e(Client.class.getSimpleName(), errorMessage);
+                        mutableResult.postValue(new Result.Error(new Exception(errorMessage)));
                     }
                 };
 

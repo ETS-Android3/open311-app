@@ -13,10 +13,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.iu.open311.api.Client;
+import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Database;
+import com.iu.open311.database.Result;
+import com.iu.open311.database.model.ServiceCategory;
 import com.iu.open311.databinding.ActivityMainBinding;
 
-import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends DefaultActivity {
     public static String INTENT_EXTRA_SHOW_MY_REQUESTS = "showMyRequests";
@@ -86,8 +89,23 @@ public class MainActivity extends DefaultActivity {
                 getResources().getString(R.string.open311_api_key)
         );
         try {
-            apiClient.loadServices(Database.getInstance(getApplicationContext()));
-        } catch (IOException e) {
+            apiClient.loadServices().observe(this, result -> {
+                if (null == result) {
+                    return;
+                }
+
+                if (result instanceof Result.Success) {
+                    ThreadExecutorSupplier.getInstance().getMajorBackgroundTasks().execute(() -> {
+                        Database database = Database.getInstance(getApplicationContext());
+                        database.serviceCategoryDao().deleteAll();
+                        List<ServiceCategory> serviceCategories =
+                                (List<ServiceCategory>) ((Result.Success<?>) result).getData();
+                        serviceCategories.forEach(serviceCategory -> database.serviceCategoryDao()
+                                                                             .insert(serviceCategory));
+                    });
+                }
+            });
+        } catch (Exception e) {
             Log.e(this.getClass().getSimpleName(),
                     "Could not load service categories: " + e.getMessage()
             );

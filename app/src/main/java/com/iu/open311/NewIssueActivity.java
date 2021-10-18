@@ -15,7 +15,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.iu.open311.api.Client;
-import com.iu.open311.api.dto.DefaultResult;
 import com.iu.open311.common.threads.ThreadExecutorSupplier;
 import com.iu.open311.database.Database;
 import com.iu.open311.database.Result;
@@ -97,20 +96,21 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
         Client apiClient = Client.getInstance(getApplicationContext(),
                 getResources().getString(R.string.open311_api_key)
         );
-        MutableLiveData<DefaultResult<Integer>> resultMutable =
-                apiClient.postRequests(getViewModel());
+        MutableLiveData<Result<Integer>> resultMutable = apiClient.postRequests(getViewModel());
 
         resultMutable.observe(this, result -> {
             if (null == result) {
                 return;
             }
 
-            if (null == result.getError()) {
+            if (result instanceof Result.Success) {
                 MyServiceRequestRepository repository = MyServiceRequestRepository.getInstance(
                         Database.getInstance(getApplicationContext()));
 
+
                 ThreadExecutorSupplier.getInstance().getMajorBackgroundTasks().execute(() -> {
-                    Result<Boolean> insertResult = repository.insert(result.getData());
+                    Result<Boolean> insertResult =
+                            repository.insert((Integer) ((Result.Success) result).getData());
                     if (insertResult instanceof Result.Error) {
                         String errorMessage =
                                 getResources().getString(R.string.error_add_new_issue) + " " +
@@ -127,7 +127,7 @@ public class NewIssueActivity extends DefaultActivity implements StepperLayout.S
                 });
             } else {
                 String errorMessage = getResources().getString(R.string.error_add_new_issue) + " " +
-                        result.getError();
+                        ((Result.Error) result).getError();
                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
             }
         });
