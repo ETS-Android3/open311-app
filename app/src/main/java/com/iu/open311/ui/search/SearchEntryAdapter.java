@@ -160,6 +160,7 @@ public class SearchEntryAdapter extends RecyclerView.Adapter<SearchEntryAdapter.
                           serviceRequests.get(position).requestedDatetime));
 
         String mediaUrl = serviceRequests.get(position).mediaUrl;
+        viewHolder.getImagePreview().setImageDrawable(null);
         if (null != mediaUrl) {
             ImageCache.getImage(mediaUrl).observe(lifecycleOwner, image -> {
                 if (null != image) {
