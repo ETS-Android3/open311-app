@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iu.open311.BuildConfig;
 import com.iu.open311.api.dto.PostRequestResponse;
 import com.iu.open311.api.dto.ServiceRequest;
@@ -25,6 +26,7 @@ import com.jacksonandroidnetworking.JacksonParserFactory;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -236,10 +238,34 @@ public class Client {
 
                     @Override
                     public void onError(ANError error) {
-                        String errorMessage = error.getErrorDetail() + ": " +
-                                (null == error.getResponse() ? "" : error.getResponse().message());
+                        String errorMessage = error.getErrorDetail() + ": ";
                         Log.e(Client.class.getSimpleName(), errorMessage);
-                        mutableResult.postValue(new Result.Error(new Exception(errorMessage)));
+
+                        String errorDetails =
+                                (null == error.getResponse()) ? "" : error.getResponse().message();
+                        try {
+                            Object errorObject =
+                                    (new ObjectMapper()).readValue(error.getErrorBody(),
+                                            Object.class
+                                    );
+                            if (errorObject instanceof ArrayList) {
+                                ArrayList<?> errorList = (ArrayList<?>) errorObject;
+                                if (errorList.size() > 0 &&
+                                        errorList.get(0) instanceof LinkedHashMap &&
+                                        ((LinkedHashMap) errorList.get(0)).containsKey(
+                                                "description")) {
+                                    errorDetails = (String) ((LinkedHashMap) errorList.get(0)).get(
+                                            "description");
+                                }
+                            }
+                        } catch (Throwable t) {
+                            Log.e(this.getClass().getSimpleName(),
+                                    "could not determine error details", t
+                            );
+                        }
+
+                        mutableResult.postValue(
+                                new Result.Error(new Exception(errorMessage + errorDetails)));
                     }
                 };
 
