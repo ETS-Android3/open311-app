@@ -238,11 +238,13 @@ public class Client {
 
                     @Override
                     public void onError(ANError error) {
-                        String errorMessage = error.getErrorDetail() + ": ";
+                        String errorMessage = error.getErrorDetail() + ": " +
+                                ((null == error.getResponse()) ?
+                                        "" :
+                                        error.getResponse().message()
+                                );
                         Log.e(Client.class.getSimpleName(), errorMessage);
 
-                        String errorDetails =
-                                (null == error.getResponse()) ? "" : error.getResponse().message();
                         try {
                             Object errorObject =
                                     (new ObjectMapper()).readValue(error.getErrorBody(),
@@ -254,8 +256,15 @@ public class Client {
                                         errorList.get(0) instanceof LinkedHashMap &&
                                         ((LinkedHashMap) errorList.get(0)).containsKey(
                                                 "description")) {
-                                    errorDetails = (String) ((LinkedHashMap) errorList.get(0)).get(
-                                            "description");
+                                    String description =
+                                            (String) ((LinkedHashMap) errorList.get(0)).get(
+                                                    "description");
+
+                                    errorMessage = (description.contains(
+                                            "Zuständigkeit muss ausgefüllt werden") ?
+                                            "Ortsangabe außerhalb Rostocks ist unzulässig" :
+                                            description
+                                    );
                                 }
                             }
                         } catch (Throwable t) {
@@ -264,8 +273,7 @@ public class Client {
                             );
                         }
 
-                        mutableResult.postValue(
-                                new Result.Error(new Exception(errorMessage + errorDetails)));
+                        mutableResult.postValue(new Result.Error(new Exception(errorMessage)));
                     }
                 };
 
